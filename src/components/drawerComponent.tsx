@@ -5,39 +5,22 @@ import {
   DrawerItem,
   DrawerItemList,
 } from "@react-navigation/drawer";
-import {
-  VStack,
-  Box,
-  HStack,
-  Icon,
-  Pressable,
-  Button,
-  Divider,
-  useTheme,
-} from "native-base";
+
 import DrawerIcon from "./DrawerIcon";
 import { Ionicons, MaterialIcons, FontAwesome } from "@expo/vector-icons";
-import { Image, Text, View } from "react-native";
+import {
+  Image,
+  Text,
+  TouchableHighlight,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { DrawerScreenPropsType } from "../navigations/AppDrawer/Types";
 import { useRoute } from "@react-navigation/native";
 const logo = require("../../assets/app_images/logo.png");
 
 const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
-  // const { colors } = useTheme();
-  // type obj = {
-  //   screen: string;
-  // };
-
-  // const getActiveRoute = () => {
-  //   let name = "";
-  //   name = activeRouteName?.screen;
-  //   return name;
-  // };
-
-  // // @ts-ignore
-  // const activeRouteName: obj = props.state.routes[0].params;
-
   return (
     //  <StatusBar style="dark" />
     <DrawerContentScrollView {...props}>
@@ -60,28 +43,36 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             />
           </View>
           <View style={{ width: "88%" }}>
-            <Button
-              colorScheme={"rose"}
+            <TouchableOpacity
+              activeOpacity={0.6}
+              style={{
+                backgroundColor: "#be123c",
+                borderRadius: 4,
+                paddingVertical: 8,
+              }}
               onPress={() => {
                 props.navigation.navigate("Root", {
                   screen: "AppTabs",
                   params: { screen: "UploadCrop" },
                 });
               }}
-              startIcon={<Ionicons name="add" size={24} color="#fff" />}
             >
-              Create Advert
-            </Button>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <Ionicons name="add" size={25} color="#fff" />
+                <Text style={{ color: "#fff" }}>Create Advert</Text>
+              </View>
+            </TouchableOpacity>
           </View>
         </View>
 
         {/* Menu  */}
-        <View>
-          <DrawerItem
-            label="Menu"
-            style={{ marginVertical: 0 }}
-            onPress={() => {}}
-          />
+        <View style={{ paddingVertical: 10 }}>
           <DrawerItem
             label={({ color }) => <Text style={{ color }}>Home</Text>}
             icon={({ focused, size, color }) => (
@@ -173,32 +164,38 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             }}
           />
         </View>
-        <Divider />
+        {/* <Divider /> */}
+
         {/* Menu-footer  */}
         <View>
-          <View style={{ paddingLeft: 8 }}>
-            <Button
-              variant="link"
-              _text={{ color: "gray.700" }}
-              justifyContent="flex-start"
+          <View style={{ paddingHorizontal: 16 }}>
+            <View
+              style={{
+                borderTopWidth: 0.4,
+                borderTopColor: "gray",
+                marginBottom: 16,
+              }}
+            ></View>
+            <TouchableOpacity
+              style={{ opacity: 0.7, marginBottom: 20 }}
               onPress={() => {
-                props.navigation.navigate("HelpAndSupport");
+                props.navigation.navigate("Root", {
+                  screen: "HelpAndSupport",
+                });
               }}
             >
-              Help And Support
-            </Button>
-            <Button
-              variant="link"
-              _text={{ color: "gray.700" }}
-              justifyContent="flex-start"
+              <Text> Help And Support</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{ opacity: 0.7, marginBottom: 20 }}
               onPress={() => {
                 props.navigation.navigate("Root", {
                   screen: "TermsAndConditions",
                 });
               }}
             >
-              Terms And Conditions
-            </Button>
+              <Text>Terms And Conditions</Text>
+            </TouchableOpacity>
           </View>
 
           <View
@@ -208,18 +205,33 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             }}
           >
             <View style={{ width: "88%" }}>
-              <Button
-                colorScheme="tertiary"
-                endIcon={<Ionicons name="log-in" size={24} color="#fff" />}
+              <TouchableOpacity
+                activeOpacity={0.6}
+                style={{
+                  backgroundColor: "#047857",
+                  borderRadius: 4,
+                  paddingVertical: 8,
+                }}
                 onPress={() => {
                   props.navigation.navigate("Root", {
                     screen: "AuthStack",
-                    params: "Signin",
+                    params: { screen: "SignIn" },
                   });
                 }}
               >
-                Login
-              </Button>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <Text style={{ color: "#fff", marginHorizontal: 4 }}>
+                    Login
+                  </Text>
+                  <Ionicons name="log-in" size={25} color="#fff" />
+                </View>
+              </TouchableOpacity>
             </View>
           </View>
         </View>

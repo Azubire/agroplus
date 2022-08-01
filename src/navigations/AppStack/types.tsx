@@ -14,7 +14,7 @@ import { AuthStackParamList } from "../authStack/types";
 export type RootStackParamList = {
   AppTabs: NavigatorScreenParams<TabParamList>;
   Distributors: undefined;
-  DistributorDetails: undefined;
+  DistributorDetails: { id: string };
   FarmProduce: undefined;
   FarmProduceDetails: undefined;
   MyAds: undefined;

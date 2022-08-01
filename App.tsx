@@ -8,7 +8,6 @@ import { Provider as ReduxProvider } from "react-redux";
 import store from "./src/store";
 import AppDrawer from "./src/navigations/AppDrawer";
 import AuthNavigationStack from "./src/navigations/authStack/AuthNavigationStack";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function App() {
   return (
