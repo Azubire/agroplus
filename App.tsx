@@ -9,12 +9,18 @@ import store from "./src/store";
 import AppDrawer from "./src/navigations/AppDrawer";
 import AuthNavigationStack from "./src/navigations/authStack/AuthNavigationStack";
 
+const user = {
+  name: "Peter",
+};
+
 export default function App() {
   return (
     <ReduxProvider store={store}>
       <NativeBaseProvider>
         <NavigationContainer>
-          <AuthNavigationStack />
+          {user ? <AppDrawer /> : <AuthNavigationStack />}
+
+          {/* <AuthNavigationStack /> */}
           {/* <AppDrawer /> */}
         </NavigationContainer>
       </NativeBaseProvider>

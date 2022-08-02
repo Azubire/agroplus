@@ -17,10 +17,10 @@ export type DrawerParamList = {
 };
 
 export type DrawerScreenPropsType<T extends keyof DrawerParamList> =
-  CompositeScreenProps<
-    DrawerScreenProps<DrawerParamList, T>,
-    CompositeScreenProps<
-      NativeStackScreenProps<RootStackParamList>,
-      BottomTabScreenProps<TabParamList>
-    >
-  >;
+  DrawerScreenProps<DrawerParamList, T>;
+
+declare global {
+  namespace ReactNavigation {
+    interface RootParamList extends DrawerParamList {}
+  }
+}

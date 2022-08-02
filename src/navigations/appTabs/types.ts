@@ -6,8 +6,8 @@ import {
   RouteProp,
 } from "@react-navigation/native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { DrawerParamList } from "../AppDrawer/Types";
-import { RootStackParamList } from "../AppStack/types";
+import { DrawerParamList, DrawerScreenPropsType } from "../AppDrawer/Types";
+import { RootStackParamList, RootStackScreenProps } from "../AppStack/types";
 
 export type TabParamList = {
   Home: undefined;
@@ -17,15 +17,10 @@ export type TabParamList = {
   Settings: undefined;
 };
 
-// export type TabScreenProps<T extends keyof TabParamList> = {
-//   navigation: NavigationProp<TabParamList, T>;
-//   route: RouteProp<TabParamList, T>;
-// };
-
 export type TabScreenProps<T extends keyof TabParamList> = CompositeScreenProps<
   BottomTabScreenProps<TabParamList, T>,
   CompositeScreenProps<
-    DrawerScreenProps<DrawerParamList>,
-    NativeStackScreenProps<RootStackParamList>
+    RootStackScreenProps<keyof RootStackParamList>,
+    DrawerScreenPropsType<keyof DrawerParamList>
   >
 >;

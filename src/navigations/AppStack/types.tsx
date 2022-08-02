@@ -6,8 +6,11 @@ import {
   NavigatorScreenParams,
   RouteProp,
 } from "@react-navigation/native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { DrawerParamList } from "../AppDrawer/Types";
+import {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from "@react-navigation/native-stack";
+import { DrawerParamList, DrawerScreenPropsType } from "../AppDrawer/Types";
 import { TabParamList, TabScreenProps } from "../appTabs/types";
 import { AuthStackParamList } from "../authStack/types";
 
@@ -27,16 +30,8 @@ export type RootStackParamList = {
   AuthStack: NavigatorScreenParams<AuthStackParamList>;
 };
 
-// export type RootStackScreenProps<T extends keyof RootStackParamList> = {
-//   navigation: NavigationProp<RootStackParamList, T>;
-//   route: RouteProp<RootStackParamList, T>;
-// };
-
 export type RootStackScreenProps<T extends keyof RootStackParamList> =
   CompositeScreenProps<
     NativeStackScreenProps<RootStackParamList, T>,
-    CompositeScreenProps<
-      DrawerScreenProps<DrawerParamList>,
-      BottomTabScreenProps<TabParamList>
-    >
+    DrawerScreenPropsType<keyof DrawerParamList>
   >;

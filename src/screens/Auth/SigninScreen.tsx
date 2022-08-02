@@ -11,7 +11,17 @@ const SigninScreen: React.FC<AuthScreenProps<"Signin">> = ({ navigation }) => {
       <VStack flex={1} justifyContent="center" alignItems="center">
         <Text>SigninScreen</Text>
         <Button
-          variant="contained"
+          variant="solid"
+          onPress={() => {
+            navigation.navigate("Root", {
+              screen: "AppTabs",
+              params: { screen: "Home" },
+            });
+          }}
+        >
+          Login
+        </Button>
+        <Button
           onPress={() => {
             navigation.navigate("Signup");
           }}

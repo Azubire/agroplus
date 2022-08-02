@@ -289,7 +289,10 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
               </Heading>
               <Button
                 onPress={() => {
-                  navigation.navigate("Distributors");
+                  navigation.navigate("Root", {
+                    screen: "AuthStack",
+                    params: { screen: "Signin" },
+                  });
                 }}
                 variant="ghost"
                 colorScheme={"rose"}
