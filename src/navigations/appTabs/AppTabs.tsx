@@ -93,12 +93,12 @@ const AppTabs = () => {
             return (
               <Ionicons
                 name={focused ? "add-circle" : "add-circle"}
-                size={50}
+                size={60}
                 color={focused ? colors.tertiary[700] : colors.rose[500]}
               />
             );
           },
-          tabBarIconStyle: { marginTop: -20 },
+          tabBarIconStyle: { marginTop: -3 },
         }}
         name="UploadCrop"
         component={UploadCrop}

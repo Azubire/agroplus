@@ -14,8 +14,8 @@ export default function App() {
     <ReduxProvider store={store}>
       <NativeBaseProvider>
         <NavigationContainer>
-          {/* <AuthNavigationStack /> */}
-          <AppDrawer />
+          <AuthNavigationStack />
+          {/* <AppDrawer /> */}
         </NavigationContainer>
       </NativeBaseProvider>
     </ReduxProvider>

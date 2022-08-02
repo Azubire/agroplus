@@ -42,6 +42,7 @@ const fImg5 = require("../../assets/app_images/farmers/img5.png");
 const fImg6 = require("../../assets/app_images/farmers/img6.png");
 const fImg7 = require("../../assets/app_images/farmers/img7.png");
 const fImg8 = require("../../assets/app_images/farmers/img8.png");
+
 const data = [
   {
     distributors: [
@@ -114,7 +115,7 @@ const data = [
       {
         id: 4,
         img: fImg2,
-        title: "Fresh Vegetable from my garden ",
+        title: "Fresh Vegetables ",
         category: "Vegetable",
         favourite: false,
       },
@@ -144,6 +145,64 @@ const data = [
         img: fImg8,
         title: "Fresh Watermelons ",
         category: "cereal",
+        favourite: false,
+      },
+    ],
+    newProduce: [
+      {
+        id: 6,
+        img: fImg6,
+        title: "Fresh Potatoes ",
+        category: "cereal",
+        favourite: true,
+      },
+      {
+        id: 7,
+        img: fImg7,
+        title: "Sweet potatoes",
+        category: "cereal",
+        favourite: false,
+      },
+      {
+        id: 8,
+        img: fImg8,
+        title: "Fresh Watermelons ",
+        category: "cereal",
+        favourite: false,
+      },
+      {
+        id: 5,
+        img: fImg2,
+        title: "Cassava freshly cultivated ",
+        category: "Root And Tuber",
+        favourite: true,
+      },
+      {
+        id: 1,
+        img: fImg4,
+        title: "Fresh maize from the farm ",
+        category: "cereal",
+        favourite: false,
+      },
+      {
+        id: 2,
+        img: fImg5,
+        title: "Fresh rice from the farm ",
+        category: "cereal",
+        favourite: true,
+      },
+      {
+        id: 3,
+        img: fImg3,
+        title: "Fresh wheat",
+        category: "cereal",
+        favourite: true,
+      },
+      {
+        id: 4,
+        img: fImg2,
+        title: "Fresh Vegetables  ",
+        category: "Vegetable",
         favourite: false,
       },
     ],
@@ -329,19 +388,20 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
                         alt={item.title}
                       />
                     </AspectRatio>
-                    {/* <TouchableOpacity
-                      style={{ position: "absolute", right: 0 }}
+                    <TouchableOpacity
+                      style={{ position: "absolute", right: 2, top: 2 }}
                     >
+                      {/*  ts-ignore  */}
                       <Icon
                         as={Ionicons}
                         name="ios-heart-circle"
                         size={8}
-                        color={"warning.500"}
+                        color={`${item.favourite ? "rose.600" : "gray.500"}`}
                       />
-                    </TouchableOpacity> */}
+                    </TouchableOpacity>
                   </Box>
                   {/* card footer  */}
-                  <Stack p="4" space={3}>
+                  <Stack px="4" space={3}>
                     <Stack space={2}>
                       <Text
                         fontSize="xs"
@@ -356,7 +416,7 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
                         {item.title}
                       </Heading>
                     </Stack>
-                    <HStack justifyContent={"space-between"}>
+                    <HStack justifyContent={"space-between"} space={2}>
                       <Button variant="outline">
                         <Ionicons
                           name="cart-outline"
@@ -365,6 +425,99 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
                         />
                       </Button>
                       <Button
+                        style={{ flex: 1 }}
+                        // ml={2}
+                        variant={"solid"}
+                        bg={colors.tertiary[700]}
+                        endIcon={
+                          <Ionicons
+                            name="chevron-forward"
+                            size={16}
+                            color={colors.white}
+                          />
+                        }
+                      >
+                        Contact Now
+                      </Button>
+                    </HStack>
+                  </Stack>
+                </VStack>
+              )}
+            />
+          </VStack>
+          {/* New Farm Produce section  */}
+          <VStack>
+            <HStack
+              justifyContent="space-between"
+              alignItems="center"
+              px={4}
+              my={4}
+            >
+              <Heading size="sm" fontWeight={"medium"}>
+                New Farm Produce
+              </Heading>
+              <Button variant="ghost" colorScheme="rose">
+                See all
+              </Button>
+            </HStack>
+            <FlatList
+              horizontal={true}
+              data={data[0].newProduce}
+              renderItem={({ item }) => (
+                <VStack
+                  borderWidth={1}
+                  borderColor="gray.300"
+                  mx={1}
+                  width="250"
+                >
+                  {/* card image  */}
+                  <Box>
+                    <AspectRatio w="100%" ratio={4 / 3}>
+                      <Image
+                        source={item.img}
+                        width={"full"}
+                        height={"full"}
+                        alt={item.title}
+                      />
+                    </AspectRatio>
+                    <TouchableOpacity
+                      style={{ position: "absolute", right: 2, top: 2 }}
+                    >
+                      <Icon
+                        as={Ionicons}
+                        name="ios-heart-circle"
+                        size={8}
+                        color={`${item.favourite ? "rose.600" : "gray.500"}`}
+                      />
+                    </TouchableOpacity>
+                  </Box>
+                  {/* card footer  */}
+                  <Stack px="4" space={3}>
+                    <Stack space={2}>
+                      <Text
+                        fontSize="xs"
+                        fontWeight="500"
+                        ml="-0.5"
+                        mt="-1"
+                        color={"gray.500"}
+                      >
+                        {item.category}
+                      </Text>
+                      <Heading size="sm" ml="-1">
+                        {item.title}
+                      </Heading>
+                    </Stack>
+                    <HStack justifyContent={"space-between"} space={2} pb={5}>
+                      <Button variant="outline">
+                        <Ionicons
+                          name="cart-outline"
+                          size={25}
+                          color={colors.tertiary[700]}
+                        />
+                      </Button>
+                      <Button
+                        style={{ flex: 1 }}
+                        // ml={2}
                         variant={"solid"}
                         bg={colors.tertiary[700]}
                         endIcon={
