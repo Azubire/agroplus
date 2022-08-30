@@ -14,15 +14,11 @@ const AuthStack = createNativeStackNavigator<AuthStackParamList>();
 const AuthNavigationStack = () => {
   return (
     <AuthStack.Navigator
-      initialRouteName="Welcome"
+      initialRouteName="Signin"
       screenOptions={{
         headerShown: false,
       }}
     >
-      <AuthStack.Screen name="Welcome" component={WelcomeScreen} />
-      <AuthStack.Screen name="WelcomeOne" component={ScreenOne} />
-      <AuthStack.Screen name="WelcomeTwo" component={ScreenTwo} />
-      <AuthStack.Screen name="WelcomeThree" component={ScreenThree} />
       <AuthStack.Screen name="Signin" component={SigninScreen} />
       <AuthStack.Screen name="Signup" component={SignupScreen} />
     </AuthStack.Navigator>

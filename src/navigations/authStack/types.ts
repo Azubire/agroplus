@@ -8,10 +8,6 @@ import { DrawerParamList, DrawerScreenPropsType } from "../AppDrawer/Types";
 import { RootStackParamList, RootStackScreenProps } from "../AppStack/types";
 
 export type AuthStackParamList = {
-  Welcome: undefined;
-  WelcomeOne: undefined;
-  WelcomeTwo: undefined;
-  WelcomeThree: undefined;
   Signin: undefined;
   Signup: undefined;
 };

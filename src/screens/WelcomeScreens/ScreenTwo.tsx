@@ -13,8 +13,9 @@ import colors from "native-base/lib/typescript/theme/base/colors";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 import { AuthScreenProps } from "../../navigations/authStack/types";
+import { WelcomeScreenProps } from "../../navigations/Welcome/types";
 
-const ScreenTwo = ({ navigation }: AuthScreenProps<"WelcomeTwo">) => {
+const ScreenTwo = ({ navigation }: WelcomeScreenProps<"ScreenTwo">) => {
   const { colors } = useTheme();
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
@@ -51,7 +52,7 @@ const ScreenTwo = ({ navigation }: AuthScreenProps<"WelcomeTwo">) => {
                 bg={colors.gray[100]}
                 size="sm"
                 onPress={() => {
-                  navigation.navigate("WelcomeOne");
+                  navigation.navigate("ScreenOne");
                 }}
               ></Button>
               <Button
@@ -62,7 +63,7 @@ const ScreenTwo = ({ navigation }: AuthScreenProps<"WelcomeTwo">) => {
               ></Button>
               <Button
                 onPress={() => {
-                  navigation.navigate("WelcomeThree");
+                  navigation.navigate("ScreenThree");
                 }}
                 size="sm"
                 variant="outline"
@@ -84,7 +85,7 @@ const ScreenTwo = ({ navigation }: AuthScreenProps<"WelcomeTwo">) => {
             <Ionicons name="arrow-forward" size={20} color={colors.white} />
           }
           onPress={() => {
-            navigation.navigate("WelcomeThree");
+            navigation.navigate("ScreenThree");
           }}
         >
           Next

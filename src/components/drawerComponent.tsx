@@ -18,9 +18,12 @@ import {
 import { StatusBar } from "expo-status-bar";
 import { DrawerScreenPropsType } from "../navigations/AppDrawer/Types";
 import { useRoute } from "@react-navigation/native";
+import { useAppDispatch } from "../hooks/reduxHooks";
+import { logout } from "../store/features/userSlice";
 const logo = require("../../assets/app_images/logo.png");
 
 const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
+  const dispatch = useAppDispatch();
   return (
     //  <StatusBar style="dark" />
     <DrawerContentScrollView {...props}>
@@ -217,6 +220,7 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
                     screen: "AuthStack",
                     params: { screen: "SignIn" },
                   });
+                  // dispatch(logout());
                 }}
               >
                 <View

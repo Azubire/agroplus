@@ -13,9 +13,19 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { AuthScreenProps } from "../../navigations/authStack/types";
+import { WelcomeScreenProps } from "../../navigations/Welcome/types";
 
-const WelcomeScreen = ({ navigation }: AuthScreenProps<"Welcome">) => {
+const WelcomeScreen = ({ navigation }: WelcomeScreenProps<"Welcome">) => {
   const { colors } = useTheme();
+
+  const [loading, setloading] = React.useState(false);
+
+  // React.useEffect(() => {
+  //   setloading(true);
+  //   return () => {
+  //     setloading(false);
+  //   };
+  // }, [loading]);
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
@@ -67,7 +77,8 @@ const WelcomeScreen = ({ navigation }: AuthScreenProps<"Welcome">) => {
             <Ionicons name="arrow-forward" size={20} color={colors.white} />
           }
           onPress={() => {
-            navigation.navigate("WelcomeOne");
+            // setloading(true);
+            navigation.navigate("ScreenOne");
           }}
         >
           Continue

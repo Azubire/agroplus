@@ -1,9 +1,5 @@
 import React from "react";
-import {
-  BottomTabBarProps,
-  BottomTabHeaderProps,
-  createBottomTabNavigator,
-} from "@react-navigation/bottom-tabs";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import { MaterialIcons, Ionicons } from "@expo/vector-icons";
 import Home from "../../screens/HomeScreen";
@@ -13,6 +9,7 @@ import Search from "../../screens/Search";
 import Explore from "../../screens/Explore";
 import UploadCrop from "../../screens/UploadCrop";
 import { useTheme } from "native-base";
+import Settings from "../../screens/Settings";
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
@@ -57,7 +54,7 @@ const AppTabs = () => {
       <Tab.Screen
         name="Home"
         component={Home}
-        options={({ route, navigation }: TabScreenProps<"Home">) => ({
+        options={({ navigation }: TabScreenProps<"Home">) => ({
           headerLeft: (props) => (
             <Ionicons
               name={"menu"}
@@ -104,7 +101,7 @@ const AppTabs = () => {
         component={UploadCrop}
       />
       <Tab.Screen name="Search" component={Search} />
-      <Tab.Screen name="Settings" component={Home} />
+      <Tab.Screen name="Settings" component={Settings} />
     </Tab.Navigator>
   );
 };

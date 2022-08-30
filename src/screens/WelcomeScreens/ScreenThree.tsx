@@ -14,12 +14,36 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import { Ionicons } from "@expo/vector-icons";
 import { AuthScreenProps } from "../../navigations/authStack/types";
+import { WelcomeScreenProps } from "../../navigations/Welcome/types";
+import { useAppDispatch } from "../../hooks/reduxHooks";
+import { getStarted } from "../../store/features/userSlice";
 
-const ScreenThree = ({ navigation }: AuthScreenProps<"WelcomeThree">) => {
+import { getItemAsync, setItemAsync } from "expo-secure-store";
+import { convertRemToAbsolute } from "native-base/lib/typescript/theme/tools";
+import Spinner from "react-native-loading-spinner-overlay/lib";
+
+const ScreenThree = ({ navigation }: WelcomeScreenProps<"ScreenThree">) => {
+  const [loading, setLoading] = React.useState<boolean>(false);
+  const dispatch = useAppDispatch();
   const { colors } = useTheme();
+
+  const handlePress = async () => {
+    // setItemAsync("showGetStarted", JSON.stringify(false));
+    // dispatch(getStarted(false));
+    // const item = await getItemAsync("showGetStarted");
+    // console.log("onpress", item);
+    setLoading(true);
+
+    navigation.navigate("Root", {
+      screen: "AppTabs",
+      params: { screen: "Home" },
+    });
+    setLoading(false);
+  };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
+      {/* <Spinner visible={loading} animation="fade" /> */}
       <VStack
         justifyContent="space-between"
         alignItems="center"
@@ -53,7 +77,7 @@ const ScreenThree = ({ navigation }: AuthScreenProps<"WelcomeThree">) => {
                 bg={colors.gray[100]}
                 size="sm"
                 onPress={() => {
-                  navigation.navigate("WelcomeOne");
+                  navigation.navigate("ScreenOne");
                 }}
               ></Button>
               <Button
@@ -64,7 +88,7 @@ const ScreenThree = ({ navigation }: AuthScreenProps<"WelcomeThree">) => {
               ></Button>
               <Button
                 onPress={() => {
-                  navigation.navigate("WelcomeThree");
+                  navigation.navigate("ScreenThree");
                 }}
                 size="sm"
                 rounded="full"
@@ -83,9 +107,7 @@ const ScreenThree = ({ navigation }: AuthScreenProps<"WelcomeThree">) => {
           endIcon={
             <Ionicons name="arrow-forward" size={20} color={colors.white} />
           }
-          onPress={() => {
-            navigation.navigate("Signin");
-          }}
+          onPress={handlePress}
         >
           Get Started
         </Button>

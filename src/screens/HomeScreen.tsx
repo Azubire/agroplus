@@ -18,206 +18,45 @@ import {
   InfoIcon,
 } from "native-base";
 import React, { useRef } from "react";
-import {
-  ImageSourcePropType,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import { ActivityIndicator, ScrollView, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { AirbnbRating } from "react-native-ratings";
-import { AppState } from "react-native";
 
-import { TabParamList, TabScreenProps } from "../navigations/appTabs/types";
+import { TabScreenProps } from "../navigations/appTabs/types";
 import { useScrollToTop } from "@react-navigation/native";
-import CustomStatusBar from "../components/CustomStatusBar";
-
-const img1 = require("../../assets/app_images/distributors/img1.jpg");
-const img2 = require("../../assets/app_images/distributors/img2.jpg");
-
-const fImg2 = require("../../assets/app_images/farmers/img2.png");
-const fImg3 = require("../../assets/app_images/farmers/img3.png");
-const fImg4 = require("../../assets/app_images/farmers/img4.png");
-const fImg5 = require("../../assets/app_images/farmers/img5.png");
-const fImg6 = require("../../assets/app_images/farmers/img6.png");
-const fImg7 = require("../../assets/app_images/farmers/img7.png");
-const fImg8 = require("../../assets/app_images/farmers/img8.png");
-
-const data = [
-  {
-    distributors: [
-      {
-        id: 1,
-        img: img1,
-        name: "Md Crops Ghana",
-        location: "Greater Accra, Tema",
-        ratings: 234,
-      },
-      {
-        id: 2,
-        img: img2,
-        name: "Dealgood ventures",
-        location: "Northern Region, Tamale",
-        ratings: 78,
-      },
-      {
-        id: 3,
-        img: img1,
-        name: "Cash Crops",
-        location: "Ashanti Region, Kumasi",
-        ratings: 154,
-      },
-      {
-        id: 4,
-        img: img2,
-        name: "Genesis Crops Ghana",
-        location: "Eastern region, Koforidua",
-        ratings: 304,
-      },
-      {
-        id: 5,
-        img: img1,
-        name: "Greener Hub",
-        location: "Eastern region, Koforidua",
-        ratings: 120,
-      },
-      {
-        id: 6,
-        img: img2,
-        name: "Let's Farm Gh",
-        location: "Greater Accra, Tema",
-        ratings: 144,
-      },
-    ],
-
-    famers: [
-      {
-        id: 1,
-        img: fImg4,
-        title: "Fresh maize from the farm ",
-        category: "cereal",
-        favourite: false,
-      },
-      {
-        id: 2,
-        img: fImg5,
-        title: "Fresh rice from the farm ",
-        category: "cereal",
-        favourite: true,
-      },
-      {
-        id: 3,
-        img: fImg3,
-        title: "Fresh wheat",
-        category: "cereal",
-        favourite: true,
-      },
-      {
-        id: 4,
-        img: fImg2,
-        title: "Fresh Vegetables ",
-        category: "Vegetable",
-        favourite: false,
-      },
-      {
-        id: 5,
-        img: fImg2,
-        title: "Big cassava freshly cultivated ",
-        category: "Root And Tuber",
-        favourite: true,
-      },
-      {
-        id: 6,
-        img: fImg6,
-        title: "Fresh Potatoes ",
-        category: "cereal",
-        favourite: false,
-      },
-      {
-        id: 7,
-        img: fImg7,
-        title: "Sweet potatoes",
-        category: "cereal",
-        favourite: false,
-      },
-      {
-        id: 8,
-        img: fImg8,
-        title: "Fresh Watermelons ",
-        category: "cereal",
-        favourite: false,
-      },
-    ],
-    newProduce: [
-      {
-        id: 6,
-        img: fImg6,
-        title: "Fresh Potatoes ",
-        category: "cereal",
-        favourite: true,
-      },
-      {
-        id: 7,
-        img: fImg7,
-        title: "Sweet potatoes",
-        category: "cereal",
-        favourite: false,
-      },
-      {
-        id: 8,
-        img: fImg8,
-        title: "Fresh Watermelons ",
-        category: "cereal",
-        favourite: false,
-      },
-      {
-        id: 5,
-        img: fImg2,
-        title: "Cassava freshly cultivated ",
-        category: "Root And Tuber",
-        favourite: true,
-      },
-      {
-        id: 1,
-        img: fImg4,
-        title: "Fresh maize from the farm ",
-        category: "cereal",
-        favourite: false,
-      },
-      {
-        id: 2,
-        img: fImg5,
-        title: "Fresh rice from the farm ",
-        category: "cereal",
-        favourite: true,
-      },
-      {
-        id: 3,
-        img: fImg3,
-        title: "Fresh wheat",
-        category: "cereal",
-        favourite: true,
-      },
-      {
-        id: 4,
-        img: fImg2,
-        title: "Fresh Vegetables  ",
-        category: "Vegetable",
-        favourite: false,
-      },
-    ],
-  },
-];
+import { useAppSelector } from "../hooks/reduxHooks";
+import {
+  getDistributors,
+  IDistributor,
+} from "../store/features/distributorSlice";
+import { getFarmerState, IFarmer } from "../store/features/famerSlice";
 
 const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
+  const [loading, setLoading] = React.useState(true);
+  const [distributors, setDistributors] = React.useState<IDistributor[]>([]);
+  const [farmers, setFarmers] = React.useState<IFarmer[]>([]);
+  const [newProduce, setNewProduce] = React.useState<IFarmer[]>([]);
+
+  const distributorState = useAppSelector(getDistributors);
+  const famerState = useAppSelector(getFarmerState);
   const { colors } = useTheme();
+
+  React.useEffect(() => {
+    setDistributors(distributorState.data);
+    setFarmers(famerState.data.farmer);
+    setNewProduce(famerState.data.newProduce);
+    setLoading(false);
+  }, []);
 
   const ref = useRef(null);
   useScrollToTop(ref);
+
   return (
-    <>
-      <StatusBar style="light" backgroundColor={colors.tertiary[700]} />
-      <ScrollView ref={ref}>
+    <ScrollView ref={ref}>
+      <StatusBar style="light" />
+      {loading ? (
+        <ActivityIndicator size="large" />
+      ) : (
         <Box mb={8}>
           {/* Welcome msessage  */}
           <VStack px={4} pt={4}>
@@ -290,8 +129,7 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
               <Button
                 onPress={() => {
                   navigation.navigate("Root", {
-                    screen: "AuthStack",
-                    params: { screen: "Signin" },
+                    screen: "Distributors",
                   });
                 }}
                 variant="ghost"
@@ -302,7 +140,7 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
             </HStack>
             <FlatList
               horizontal={true}
-              data={data[0].distributors}
+              data={distributors}
               renderItem={({ item }) => (
                 <TouchableOpacity
                   activeOpacity={0.5}
@@ -312,6 +150,7 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
                     });
                   }}
                 >
+                  {/* card start  */}
                   <VStack
                     borderWidth={1}
                     borderColor="gray.300"
@@ -319,6 +158,7 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
                     mx={1}
                     width="250"
                   >
+                    {/* card image  */}
                     <Box>
                       <AspectRatio w="100%" ratio={4 / 3}>
                         <Image
@@ -330,6 +170,7 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
                         />
                       </AspectRatio>
                     </Box>
+                    {/* card content  */}
                     <Stack p="4" space={3}>
                       <Stack space={2}>
                         <Heading size="sm" ml="-1">
@@ -358,6 +199,7 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
           </VStack>
           {/* Most Farm Produce section  */}
           <VStack>
+            {/* // famers section  */}
             <HStack
               justifyContent="space-between"
               alignItems="center"
@@ -373,7 +215,7 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
             </HStack>
             <FlatList
               horizontal={true}
-              data={data[0].famers}
+              data={farmers}
               renderItem={({ item }) => (
                 <VStack
                   borderWidth={1}
@@ -465,7 +307,7 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
             </HStack>
             <FlatList
               horizontal={true}
-              data={data[0].newProduce}
+              data={newProduce}
               renderItem={({ item }) => (
                 <VStack
                   borderWidth={1}
@@ -540,8 +382,8 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
             />
           </VStack>
         </Box>
-      </ScrollView>
-    </>
+      )}
+    </ScrollView>
   );
 };
 

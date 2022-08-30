@@ -1,20 +1,14 @@
-import { BottomTabScreenProps } from "@react-navigation/bottom-tabs";
-import { DrawerScreenProps } from "@react-navigation/drawer";
 import {
   CompositeScreenProps,
-  NavigationProp,
   NavigatorScreenParams,
-  RouteProp,
 } from "@react-navigation/native";
-import {
-  NativeStackNavigationProp,
-  NativeStackScreenProps,
-} from "@react-navigation/native-stack";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { DrawerParamList, DrawerScreenPropsType } from "../AppDrawer/Types";
-import { TabParamList, TabScreenProps } from "../appTabs/types";
+import { TabParamList } from "../appTabs/types";
 import { AuthStackParamList } from "../authStack/types";
 
 export type RootStackParamList = {
+  // WelcomeStack: NavigatorScreenParams<WelcomeStackParamList>;
   AppTabs: NavigatorScreenParams<TabParamList>;
   Distributors: undefined;
   DistributorDetails: { id: string };
