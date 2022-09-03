@@ -13,7 +13,8 @@ export type RootStackParamList = {
   Distributors: undefined;
   DistributorDetails: { id: string };
   FarmProduce: undefined;
-  FarmProduceDetails: undefined;
+  FarmProduceDetails: { id: string };
+  Cart: { id: number };
   MyAds: undefined;
   AboutUs: undefined;
   ContactUs: undefined;
@@ -21,6 +22,7 @@ export type RootStackParamList = {
   Notifications: undefined;
   HelpAndSupport: undefined;
   TermsAndConditions: undefined;
+  NewsDetails: { id: string };
   AuthStack: NavigatorScreenParams<AuthStackParamList>;
 };
 

@@ -1,8 +1,8 @@
-import { StyleSheet } from "react-native";
+import { Image, StyleSheet } from "react-native";
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import CustomStatusBar from "../../components/CustomStatusBar";
-import { Text, View } from "native-base";
+import { Card, Heading, HStack, Text, View, VStack } from "native-base";
 
 const Explore = () => {
   return (
@@ -12,12 +12,22 @@ const Explore = () => {
         <Text fontSize="lg" textAlign="center">
           Get Exciting News From The World Of Agriculture
         </Text>
-        <Text px={2} mt={4}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugiat
-          libero, quisquam sit vero nemo eum animi quibusdam ullam, velit
-          voluptatibus, nulla vitae assumenda. Quaerat impedit est expedita
-          sapiente dolorem corporis?
-        </Text>
+
+        <Heading>Latest Agric News</Heading>
+        <Card>
+          <HStack>
+            <Text>How to nurse mango seedlings</Text>
+            {/* <Image source={require("")} /> */}
+            <VStack>
+              <Text>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Ratione
+                nihil error deleniti alias aperiam delectus quibusdam quidem
+                libero dicta molestias et nulla ad dignissimos neque
+                consequuntur, illo similique eius. Nulla?
+              </Text>
+            </VStack>
+          </HStack>
+        </Card>
       </View>
     </SafeAreaView>
   );

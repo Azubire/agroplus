@@ -24,12 +24,13 @@ import { AirbnbRating } from "react-native-ratings";
 
 import { TabScreenProps } from "../navigations/appTabs/types";
 import { useScrollToTop } from "@react-navigation/native";
-import { useAppSelector } from "../hooks/reduxHooks";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import {
   getDistributors,
   IDistributor,
 } from "../store/features/distributorSlice";
 import { getFarmerState, IFarmer } from "../store/features/famerSlice";
+import { addToCart } from "../store/features/cartSlice";
 
 const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
   const [loading, setLoading] = React.useState(true);
@@ -37,6 +38,7 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
   const [farmers, setFarmers] = React.useState<IFarmer[]>([]);
   const [newProduce, setNewProduce] = React.useState<IFarmer[]>([]);
 
+  const dispatch = useAppDispatch();
   const distributorState = useAppSelector(getDistributors);
   const famerState = useAppSelector(getFarmerState);
   const { colors } = useTheme();
@@ -209,84 +211,114 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
               <Heading size="sm" fontWeight={"medium"}>
                 Popular Farm Produce
               </Heading>
-              <Button variant="ghost" colorScheme="rose">
+              <Button
+                variant="ghost"
+                colorScheme="rose"
+                onPress={() => {
+                  navigation.navigate("FarmProduce");
+                }}
+              >
                 See all
               </Button>
             </HStack>
             <FlatList
               horizontal={true}
               data={farmers}
-              renderItem={({ item }) => (
-                <VStack
-                  borderWidth={1}
-                  borderColor="gray.300"
-                  mx={1}
-                  width="250"
+              renderItem={({ item, index }) => (
+                <TouchableOpacity
+                  style={{ flex: 1, marginBottom: 10 }}
+                  key={index}
+                  activeOpacity={0.5}
+                  onPress={() => {
+                    navigation.navigate("FarmProduceDetails", {
+                      id: item.id.toString(),
+                    });
+                  }}
                 >
-                  {/* card image  */}
-                  <Box>
-                    <AspectRatio w="100%" ratio={4 / 3}>
-                      <Image
-                        source={item.img}
-                        width={"full"}
-                        height={"full"}
-                        alt={item.title}
-                      />
-                    </AspectRatio>
-                    <TouchableOpacity
-                      style={{ position: "absolute", right: 2, top: 2 }}
-                    >
-                      {/*  ts-ignore  */}
-                      <Icon
-                        as={Ionicons}
-                        name="ios-heart-circle"
-                        size={8}
-                        color={`${item.favourite ? "rose.600" : "gray.500"}`}
-                      />
-                    </TouchableOpacity>
-                  </Box>
-                  {/* card footer  */}
-                  <Stack px="4" space={3}>
-                    <Stack space={2}>
-                      <Text
-                        fontSize="xs"
-                        fontWeight="500"
-                        ml="-0.5"
-                        mt="-1"
-                        color={"gray.500"}
-                      >
-                        {item.category}
-                      </Text>
-                      <Heading size="sm" ml="-1">
-                        {item.title}
-                      </Heading>
-                    </Stack>
-                    <HStack justifyContent={"space-between"} space={2}>
-                      <Button variant="outline">
-                        <Ionicons
-                          name="cart-outline"
-                          size={25}
-                          color={colors.tertiary[700]}
+                  <VStack
+                    borderWidth={1}
+                    borderColor="gray.300"
+                    mx={1}
+                    width="250"
+                  >
+                    {/* card image  */}
+                    <Box>
+                      <AspectRatio w="100%" ratio={4 / 3}>
+                        <Image
+                          source={item.img}
+                          width={"full"}
+                          height={"full"}
+                          alt={item.title}
                         />
-                      </Button>
-                      <Button
-                        style={{ flex: 1 }}
-                        // ml={2}
-                        variant={"solid"}
-                        bg={colors.tertiary[700]}
-                        endIcon={
-                          <Ionicons
-                            name="chevron-forward"
-                            size={16}
-                            color={colors.white}
-                          />
-                        }
+                      </AspectRatio>
+                      <TouchableOpacity
+                        style={{ position: "absolute", right: 2, top: 2 }}
                       >
-                        Contact Now
-                      </Button>
-                    </HStack>
-                  </Stack>
-                </VStack>
+                        {/*  ts-ignore  */}
+                        <Icon
+                          as={Ionicons}
+                          name="ios-heart-circle"
+                          size={8}
+                          color={`${item.favourite ? "rose.600" : "gray.500"}`}
+                        />
+                      </TouchableOpacity>
+                    </Box>
+                    {/* card footer  */}
+                    <Stack px="4" space={3}>
+                      <Stack space={2}>
+                        <Text
+                          fontSize="xs"
+                          fontWeight="500"
+                          ml="-0.5"
+                          mt="-1"
+                          color={"gray.500"}
+                        >
+                          {item.category}
+                        </Text>
+                        <Heading size="sm" ml="-1">
+                          {item.title}
+                        </Heading>
+                      </Stack>
+                      <HStack justifyContent={"space-between"} space={2} my={2}>
+                        <Button
+                          variant="outline"
+                          onPress={() => {
+                            dispatch(
+                              addToCart({
+                                id: item.id,
+                                img: item.img,
+                                title: item.title,
+                                price: item.price,
+                                quantity: 1,
+                              })
+                            );
+                          }}
+                        >
+                          <Ionicons
+                            name="cart-outline"
+                            size={25}
+                            color={colors.tertiary[700]}
+                          />
+                        </Button>
+                        <Button
+                          style={{ flex: 1 }}
+                          // ml={2}
+                          variant={"solid"}
+                          bg={colors.tertiary[700]}
+                          endIcon={
+                            <Ionicons
+                              name="chevron-forward"
+                              size={16}
+                              color={colors.white}
+                            />
+                          }
+                        >
+                          Buy Now
+                        </Button>
+                      </HStack>
+                    </Stack>
+                  </VStack>
+                </TouchableOpacity>
               )}
             />
           </VStack>
@@ -308,76 +340,100 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
             <FlatList
               horizontal={true}
               data={newProduce}
-              renderItem={({ item }) => (
-                <VStack
-                  borderWidth={1}
-                  borderColor="gray.300"
-                  mx={1}
-                  width="250"
+              renderItem={({ item, index }) => (
+                <TouchableOpacity
+                  style={{ flex: 1, marginBottom: 10 }}
+                  key={index}
+                  activeOpacity={0.5}
+                  onPress={() => {
+                    navigation.navigate("FarmProduceDetails", {
+                      id: item.id.toString(),
+                    });
+                  }}
                 >
-                  {/* card image  */}
-                  <Box>
-                    <AspectRatio w="100%" ratio={4 / 3}>
-                      <Image
-                        source={item.img}
-                        width={"full"}
-                        height={"full"}
-                        alt={item.title}
-                      />
-                    </AspectRatio>
-                    <TouchableOpacity
-                      style={{ position: "absolute", right: 2, top: 2 }}
-                    >
-                      <Icon
-                        as={Ionicons}
-                        name="ios-heart-circle"
-                        size={8}
-                        color={`${item.favourite ? "rose.600" : "gray.500"}`}
-                      />
-                    </TouchableOpacity>
-                  </Box>
-                  {/* card footer  */}
-                  <Stack px="4" space={3}>
-                    <Stack space={2}>
-                      <Text
-                        fontSize="xs"
-                        fontWeight="500"
-                        ml="-0.5"
-                        mt="-1"
-                        color={"gray.500"}
-                      >
-                        {item.category}
-                      </Text>
-                      <Heading size="sm" ml="-1">
-                        {item.title}
-                      </Heading>
-                    </Stack>
-                    <HStack justifyContent={"space-between"} space={2} pb={5}>
-                      <Button variant="outline">
-                        <Ionicons
-                          name="cart-outline"
-                          size={25}
-                          color={colors.tertiary[700]}
+                  <VStack
+                    borderWidth={1}
+                    borderColor="gray.300"
+                    mx={1}
+                    width="250"
+                  >
+                    {/* card image  */}
+                    <Box>
+                      <AspectRatio w="100%" ratio={4 / 3}>
+                        <Image
+                          source={item.img}
+                          width={"full"}
+                          height={"full"}
+                          alt={item.title}
                         />
-                      </Button>
-                      <Button
-                        style={{ flex: 1 }}
-                        // ml={2}
-                        variant={"solid"}
-                        bg={colors.tertiary[700]}
-                        endIcon={
-                          <Ionicons
-                            name="chevron-forward"
-                            size={16}
-                            color={colors.white}
-                          />
-                        }
+                      </AspectRatio>
+                      <TouchableOpacity
+                        style={{ position: "absolute", right: 2, top: 2 }}
                       >
-                        Contact Now
-                      </Button>
-                    </HStack>
-                  </Stack>
-                </VStack>
+                        <Icon
+                          as={Ionicons}
+                          name="ios-heart-circle"
+                          size={8}
+                          color={`${item.favourite ? "rose.600" : "gray.500"}`}
+                        />
+                      </TouchableOpacity>
+                    </Box>
+                    {/* card footer  */}
+                    <Stack px="4" space={3}>
+                      <Stack space={2}>
+                        <Text
+                          fontSize="xs"
+                          fontWeight="500"
+                          ml="-0.5"
+                          mt="-1"
+                          color={"gray.500"}
+                        >
+                          {item.category}
+                        </Text>
+                        <Heading size="sm" ml="-1">
+                          {item.title}
+                        </Heading>
+                      </Stack>
+                      <HStack justifyContent={"space-between"} space={2} py={2}>
+                        <Button
+                          variant="outline"
+                          onPress={() => {
+                            dispatch(
+                              addToCart({
+                                id: item.id,
+                                img: item.img,
+                                title: item.title,
+                                price: item.price,
+                                quantity: 1,
+                              })
+                            );
+                          }}
+                        >
+                          <Ionicons
+                            name="cart-outline"
+                            size={25}
+                            color={colors.tertiary[700]}
+                          />
+                        </Button>
+                        <Button
+                          style={{ flex: 1 }}
+                          // ml={2}
+                          variant={"solid"}
+                          bg={colors.tertiary[700]}
+                          endIcon={
+                            <Ionicons
+                              name="chevron-forward"
+                              size={16}
+                              color={colors.white}
+                            />
+                          }
+                        >
+                          Contact Now
+                        </Button>
+                      </HStack>
+                    </Stack>
+                  </VStack>
+                </TouchableOpacity>
               )}
             />
           </VStack>

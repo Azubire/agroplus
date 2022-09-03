@@ -13,8 +13,11 @@ export interface IFarmer {
   id: number;
   img: any;
   title: string;
+  description: string;
+  price: number;
   category: string;
   favourite: boolean;
+  createdAt: string;
 }
 
 interface InitialStateTypes {
@@ -34,7 +37,11 @@ const initialState: InitialStateTypes = {
       {
         id: 1,
         img: fImg4,
-        title: "Fresh maize from the farm ",
+        description:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, provident quaerat non alias quasi, nobis eius delectus ullam perferendis expedita vitae nihil, optio similique suscipit enim quibusdam temporibus quidem impedit.",
+        price: 452,
+        createdAt: "22nd May,2022 | 2:00PM",
+        title: "Fresh maize from the farm  and bla bla bla",
         category: "cereal",
         favourite: false,
       },
@@ -42,6 +49,10 @@ const initialState: InitialStateTypes = {
         id: 2,
         img: fImg5,
         title: "Fresh rice from the farm ",
+        description:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, provident quaerat non alias quasi, nobis eius delectus ullam perferendis expedita vitae nihil, optio similique suscipit enim quibusdam temporibus quidem impedit.",
+        price: 452,
+        createdAt: "22nd May,2022 | 2:00PM",
         category: "cereal",
         favourite: true,
       },
@@ -49,6 +60,10 @@ const initialState: InitialStateTypes = {
         id: 3,
         img: fImg3,
         title: "Fresh wheat",
+        description:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, provident quaerat non alias quasi, nobis eius delectus ullam perferendis expedita vitae nihil, optio similique suscipit enim quibusdam temporibus quidem impedit.",
+        price: 452,
+        createdAt: "22nd May,2022 | 2:00PM",
         category: "cereal",
         favourite: true,
       },
@@ -56,6 +71,10 @@ const initialState: InitialStateTypes = {
         id: 4,
         img: fImg2,
         title: "Fresh Vegetables ",
+        description:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, provident quaerat non alias quasi, nobis eius delectus ullam perferendis expedita vitae nihil, optio similique suscipit enim quibusdam temporibus quidem impedit.",
+        price: 452,
+        createdAt: "22nd May,2022 | 2:00PM",
         category: "Vegetable",
         favourite: false,
       },
@@ -63,6 +82,10 @@ const initialState: InitialStateTypes = {
         id: 5,
         img: fImg2,
         title: "Big cassava freshly cultivated ",
+        description:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, provident quaerat non alias quasi, nobis eius delectus ullam perferendis expedita vitae nihil, optio similique suscipit enim quibusdam temporibus quidem impedit.",
+        price: 452,
+        createdAt: "22nd May,2022 | 2:00PM",
         category: "Root And Tuber",
         favourite: true,
       },
@@ -70,6 +93,10 @@ const initialState: InitialStateTypes = {
         id: 6,
         img: fImg6,
         title: "Fresh Potatoes ",
+        description:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, provident quaerat non alias quasi, nobis eius delectus ullam perferendis expedita vitae nihil, optio similique suscipit enim quibusdam temporibus quidem impedit.",
+        price: 452,
+        createdAt: "22nd May,2022 | 2:00PM",
         category: "cereal",
         favourite: false,
       },
@@ -77,6 +104,10 @@ const initialState: InitialStateTypes = {
         id: 7,
         img: fImg7,
         title: "Sweet potatoes",
+        description:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, provident quaerat non alias quasi, nobis eius delectus ullam perferendis expedita vitae nihil, optio similique suscipit enim quibusdam temporibus quidem impedit.",
+        price: 452,
+        createdAt: "22nd May,2022 | 2:00PM",
         category: "cereal",
         favourite: false,
       },
@@ -84,6 +115,10 @@ const initialState: InitialStateTypes = {
         id: 8,
         img: fImg8,
         title: "Fresh Watermelons ",
+        description:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, provident quaerat non alias quasi, nobis eius delectus ullam perferendis expedita vitae nihil, optio similique suscipit enim quibusdam temporibus quidem impedit.",
+        price: 452,
+        createdAt: "22nd May,2022 | 2:00PM",
         category: "cereal",
         favourite: false,
       },
@@ -94,6 +129,10 @@ const initialState: InitialStateTypes = {
         id: 6,
         img: fImg6,
         title: "Fresh Potatoes ",
+        description:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, provident quaerat non alias quasi, nobis eius delectus ullam perferendis expedita vitae nihil, optio similique suscipit enim quibusdam temporibus quidem impedit.",
+        price: 452,
+        createdAt: "22nd May,2022 | 2:00PM",
         category: "cereal",
         favourite: true,
       },
@@ -101,6 +140,10 @@ const initialState: InitialStateTypes = {
         id: 7,
         img: fImg7,
         title: "Sweet potatoes",
+        description:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, provident quaerat non alias quasi, nobis eius delectus ullam perferendis expedita vitae nihil, optio similique suscipit enim quibusdam temporibus quidem impedit.",
+        price: 452,
+        createdAt: "22nd May,2022 | 2:00PM",
         category: "cereal",
         favourite: false,
       },
@@ -108,6 +151,10 @@ const initialState: InitialStateTypes = {
         id: 8,
         img: fImg8,
         title: "Fresh Watermelons ",
+        description:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, provident quaerat non alias quasi, nobis eius delectus ullam perferendis expedita vitae nihil, optio similique suscipit enim quibusdam temporibus quidem impedit.",
+        price: 452,
+        createdAt: "22nd May,2022 | 2:00PM",
         category: "cereal",
         favourite: false,
       },
@@ -115,6 +162,10 @@ const initialState: InitialStateTypes = {
         id: 5,
         img: fImg2,
         title: "Cassava freshly cultivated ",
+        description:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, provident quaerat non alias quasi, nobis eius delectus ullam perferendis expedita vitae nihil, optio similique suscipit enim quibusdam temporibus quidem impedit.",
+        price: 452,
+        createdAt: "22nd May,2022 | 2:00PM",
         category: "Root And Tuber",
         favourite: true,
       },
@@ -122,6 +173,10 @@ const initialState: InitialStateTypes = {
         id: 1,
         img: fImg4,
         title: "Fresh maize from the farm ",
+        description:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, provident quaerat non alias quasi, nobis eius delectus ullam perferendis expedita vitae nihil, optio similique suscipit enim quibusdam temporibus quidem impedit.",
+        price: 452,
+        createdAt: "22nd May,2022 | 2:00PM",
         category: "cereal",
         favourite: false,
       },
@@ -129,6 +184,10 @@ const initialState: InitialStateTypes = {
         id: 2,
         img: fImg5,
         title: "Fresh rice from the farm ",
+        description:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, provident quaerat non alias quasi, nobis eius delectus ullam perferendis expedita vitae nihil, optio similique suscipit enim quibusdam temporibus quidem impedit.",
+        price: 452,
+        createdAt: "22nd May,2022 | 2:00PM",
         category: "cereal",
         favourite: true,
       },
@@ -136,6 +195,10 @@ const initialState: InitialStateTypes = {
         id: 3,
         img: fImg3,
         title: "Fresh wheat",
+        description:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, provident quaerat non alias quasi, nobis eius delectus ullam perferendis expedita vitae nihil, optio similique suscipit enim quibusdam temporibus quidem impedit.",
+        price: 452,
+        createdAt: "22nd May,2022 | 2:00PM",
         category: "cereal",
         favourite: true,
       },
@@ -143,6 +206,10 @@ const initialState: InitialStateTypes = {
         id: 4,
         img: fImg2,
         title: "Fresh Vegetables  ",
+        description:
+          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, provident quaerat non alias quasi, nobis eius delectus ullam perferendis expedita vitae nihil, optio similique suscipit enim quibusdam temporibus quidem impedit.",
+        price: 452,
+        createdAt: "22nd May,2022 | 2:00PM",
         category: "Vegetable",
         favourite: false,
       },
@@ -157,5 +224,22 @@ const farmerSlice = createSlice({
 });
 
 export const getFarmerState = (state: RootState) => state.Farmers;
+
+export const getProduce = (id: number) => (state: RootState) =>
+  state.Farmers.data.farmer.filter((produce) => produce.id === id);
+
+export const getRelatedProduce = (id: number) => (state: RootState) => {
+  const array: Array<Number> = [];
+
+  for (let i = 1; i <= 2; i++) {
+    array.push(i === 1 ? id + 1 : id - 1);
+  }
+
+  const newArray = state.Farmers.data.farmer.filter((item) => {
+    return array.includes(item.id);
+  });
+
+  return newArray;
+};
 
 export default farmerSlice.reducer;

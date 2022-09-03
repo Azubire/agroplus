@@ -1,15 +1,26 @@
-//helper function that returns a string - name of an icon in sidebar component
-//paramemter types
+import * as secureStore from "expo-secure-store";
 
-// type ScreenName = string | undefined;
+type SetStoreTypes = {
+  key: "SETUSERTOKEN";
+  options: {
+    userToken: string;
+    email: string;
+  };
+};
 
-// export const getIcon = (screenName: ScreenName): string | undefined => {
-//   switch (screenName) {
-//     case "Home":
-//       return "home";
-//     case "Settings":
-//       return "cog";
-//     default:
-//       return undefined;
-//   }
-// };
+// set item to secureStore
+export const setUserToSecureStore = async ({ key, options }: SetStoreTypes) => {
+  const data = await secureStore.setItemAsync(key, JSON.stringify(options));
+
+  return data;
+};
+
+// get item from secureStore
+export const getUserFromSecureStore = async (key: string) => {
+  const data = await secureStore.getItemAsync(key);
+  if (data) {
+    return JSON.parse(data);
+  } else {
+    return null;
+  }
+};

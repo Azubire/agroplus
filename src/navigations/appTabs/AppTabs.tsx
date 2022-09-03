@@ -8,13 +8,16 @@ import { TabParamList, TabScreenProps } from "./types";
 import Search from "../../screens/Search";
 import Explore from "../../screens/Explore";
 import UploadCrop from "../../screens/UploadCrop";
-import { useTheme } from "native-base";
+import { Badge, Box, HStack, useTheme, VStack } from "native-base";
 import Settings from "../../screens/Settings";
+import { useAppSelector } from "../../hooks/reduxHooks";
+import { getCart } from "../../store/features/cartSlice";
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
 const AppTabs = () => {
   const { colors } = useTheme();
+  const state = useAppSelector(getCart);
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -79,7 +82,26 @@ const AppTabs = () => {
           headerShown: true,
 
           headerRight: (props) => (
-            <Ionicons name={"notifications"} size={26} color={"#fff"} />
+            <HStack w={100} justifyContent="space-evenly" alignItems="center">
+              <VStack>
+                <Badge
+                  mb={-4}
+                  mr={-3}
+                  alignSelf="flex-end"
+                  rounded="full"
+                  colorScheme="danger"
+                  variant="solid"
+                  zIndex={1}
+                  _text={{
+                    fontSize: 10,
+                  }}
+                >
+                  {state.items.length}
+                </Badge>
+                <Ionicons name="cart" pr={4} size={26} color={"#fff"} />
+              </VStack>
+              <Ionicons name={"notifications"} size={26} color={"#fff"} />
+            </HStack>
           ),
         })}
       />
