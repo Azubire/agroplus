@@ -17,16 +17,77 @@ import {
   WarningOutlineIcon,
 } from "native-base";
 import { AuthScreenProps } from "../../navigations/authStack/types";
-import { useAppDispatch } from "../../hooks/reduxHooks";
-import { login } from "../../store/features/userSlice";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import CustomStatusBar from "../../components/CustomStatusBar";
 import { Ionicons } from "@expo/vector-icons";
+import "fast-text-encoding";
+import Joi from "joi";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { joiResolver } from "@hookform/resolvers/joi";
+import { getUser, signin } from "../../store/features/userSlice";
+
+export interface IFormData {
+  email: string;
+  password: string;
+}
+
+const schema = Joi.object<any, false, IFormData>({
+  email: Joi.string()
+    .email({ tlds: { allow: false } })
+    .required(),
+  password: Joi.string().required(),
+});
 
 const SigninScreen: React.FC<AuthScreenProps<"Signin">> = ({ navigation }) => {
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const dispatch = useAppDispatch();
 
   const { colors } = useTheme();
+  const state = useAppSelector(getUser);
+
+  //react-hook-form
+  const {
+    reset,
+    handleSubmit,
+    control,
+    formState: {
+      errors,
+      isSubmitSuccessful,
+      isValid,
+      isDirty,
+      isSubmitting,
+      isValidating,
+    },
+  } = useForm<IFormData>({
+    defaultValues: {},
+    resolver: joiResolver(schema),
+    // resolver: async (data, context, options) => {
+    //   // you can debug your validation schema here
+    //   // console.log("formData", data);
+    //   console.log(
+    //     "validation result",
+    //     await joiResolver(schema)(data, context, options)
+    //   );
+    //   return joiResolver(schema)(data, context, options);
+    // },
+  });
+
+  const onsubmit: SubmitHandler<IFormData> = async (formData) => {
+    console.log("validated data --->", formData);
+    try {
+      const data = await dispatch(signin(formData)).unwrap();
+      console.log("data", data);
+      if (!data.error) {
+        navigation.navigate("Root", {
+          screen: "AppTabs",
+          params: { screen: "Settings" },
+        });
+      }
+      reset();
+    } catch (error) {
+      console.log("error", error);
+    }
+  };
 
   return (
     <ScrollView flex={1}>
@@ -53,43 +114,72 @@ const SigninScreen: React.FC<AuthScreenProps<"Signin">> = ({ navigation }) => {
           </HStack>
         </HStack>
         <Text textAlign="center">Log into your account</Text>
+        {state.status === "failed" ? (
+          <Text textAlign="center" mt={2} fontSize="lg" color="error.500">
+            Email or password incorrect
+          </Text>
+        ) : null}
         {/* form */}
         <VStack px={6} space={6} mt={6}>
-          <FormControl isInvalid={false}>
-            <Input
-              variant="filled"
-              size="lg"
-              InputLeftElement={
-                <Icon size={21} ml={3} as={<Ionicons name="mail" />} />
-              }
-              bgColor={colors.gray[300]}
-              placeholder="Enter password"
+          <FormControl isInvalid={Boolean(errors.email)}>
+            <Controller
+              name="email"
+              control={control}
+              defaultValue=""
+              render={({ field: { onChange } }) => (
+                <>
+                  <Input
+                    onChangeText={onChange}
+                    variant="filled"
+                    size="lg"
+                    InputLeftElement={
+                      <Icon size={21} ml={3} as={<Ionicons name="mail" />} />
+                    }
+                    bgColor={colors.gray[300]}
+                    placeholder="Enter password"
+                  />
+                  <FormControl.ErrorMessage
+                    leftIcon={<WarningOutlineIcon size="xs" />}
+                  >
+                    {errors.email?.message}
+                  </FormControl.ErrorMessage>
+                </>
+              )}
             />
-            <FormControl.ErrorMessage
-              leftIcon={<WarningOutlineIcon size="xs" />}
-            >
-              Try different from previous passwords.
-            </FormControl.ErrorMessage>
           </FormControl>
-          <FormControl isInvalid={false}>
-            <Input
-              secureTextEntry
-              variant="filled"
-              size="lg"
-              InputLeftElement={
-                <Icon size={21} ml={3} as={<Ionicons name="lock-closed" />} />
-              }
-              InputRightElement={
-                <Icon size={21} mr={3} as={<Ionicons name="eye" />} />
-              }
-              bgColor={colors.gray[300]}
-              placeholder="Enter password"
+          <FormControl isInvalid={Boolean(errors.password)}>
+            <Controller
+              name="password"
+              control={control}
+              defaultValue=""
+              render={({ field: { onChange } }) => (
+                <>
+                  <Input
+                    onChangeText={onChange}
+                    secureTextEntry
+                    variant="filled"
+                    size="lg"
+                    InputLeftElement={
+                      <Icon
+                        size={21}
+                        ml={3}
+                        as={<Ionicons name="lock-closed" />}
+                      />
+                    }
+                    InputRightElement={
+                      <Icon size={21} mr={3} as={<Ionicons name="eye" />} />
+                    }
+                    bgColor={colors.gray[300]}
+                    placeholder="Enter password"
+                  />
+                  <FormControl.ErrorMessage
+                    leftIcon={<WarningOutlineIcon size="xs" />}
+                  >
+                    {errors.password?.message}
+                  </FormControl.ErrorMessage>
+                </>
+              )}
             />
-            <FormControl.ErrorMessage
-              leftIcon={<WarningOutlineIcon size="xs" />}
-            >
-              Try different from previous passwords.
-            </FormControl.ErrorMessage>
           </FormControl>
           <Checkbox
             // shadow={2}
@@ -102,8 +192,10 @@ const SigninScreen: React.FC<AuthScreenProps<"Signin">> = ({ navigation }) => {
           </Checkbox>
 
           <Button
+            isLoading={Boolean(state.status === "loading")}
             colorScheme="tertiary"
             rightIcon={<Icon as={<Ionicons name="chevron-forward" />} />}
+            onPress={handleSubmit(onsubmit)}
           >
             Sign in
           </Button>

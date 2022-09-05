@@ -138,6 +138,9 @@ const FarmerDetails = ({
                 <Button
                   colorScheme="tertiary"
                   rightIcon={<Icon as={<Ionicons name="chevron-forward" />} />}
+                  onPress={() => {
+                    navigation.navigate("Cart");
+                  }}
                 >
                   Checkout
                 </Button>

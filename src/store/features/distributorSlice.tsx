@@ -70,48 +70,6 @@ const initialState: IInitialState = {
       location: "Ashanti Region, Kumasi",
       ratings: 154,
     },
-    {
-      id: 4,
-      img: img2,
-      name: "Genesis Crops Ghana",
-      email: "mdghana@gmail.com",
-      contact: "+2335687598",
-      website: "https://mdghana.com",
-      profile:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eligendi laboriosam voluptates possimus atque debitis ab officiis. Odit laboriosam, nemo, adipisci reiciendis iusto voluptate facere possimus, eligendi omnis distinctio consequuntur. Dolore!",
-      createdAt: "2nd June 2022 15:05PM",
-      transactions: 4552,
-      location: "Eastern region, Koforidua",
-      ratings: 304,
-    },
-    {
-      id: 5,
-      img: img1,
-      name: "Greener Hub",
-      email: "mdghana@gmail.com",
-      contact: "+2335687598",
-      website: "https://mdghana.com",
-      profile:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eligendi laboriosam voluptates possimus atque debitis ab officiis. Odit laboriosam, nemo, adipisci reiciendis iusto voluptate facere possimus, eligendi omnis distinctio consequuntur. Dolore!",
-      createdAt: "2nd June 2022 15:05PM",
-      transactions: 454,
-      location: "Eastern region, Koforidua",
-      ratings: 120,
-    },
-    {
-      id: 6,
-      img: img2,
-      name: "Let's Farm Gh",
-      email: "mdghana@gmail.com",
-      contact: "+2335687598",
-      website: "https://mdghana.com",
-      profile:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eligendi laboriosam voluptates possimus atque debitis ab officiis. Odit laboriosam, nemo, adipisci reiciendis iusto voluptate facere possimus, eligendi omnis distinctio consequuntur. Dolore!",
-      createdAt: "2nd June 2022 15:05PM",
-      transactions: 13,
-      location: "Greater Accra, Tema",
-      ratings: 144,
-    },
   ],
 };
 

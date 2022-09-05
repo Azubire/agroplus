@@ -312,6 +312,11 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
                               color={colors.white}
                             />
                           }
+                          onPress={() => {
+                            navigation.navigate("FarmProduceDetails", {
+                              id: item.id.toString(),
+                            });
+                          }}
                         >
                           Buy Now
                         </Button>

@@ -2,9 +2,9 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "..";
 
 export interface ICart {
-  id: number | undefined;
+  id: number;
   img: any;
-  title: string | undefined;
+  title: string;
   price: number;
   quantity: number;
 }
@@ -42,16 +42,49 @@ const cartSlice = createSlice({
       }, 0);
       state.isOpen = true;
     },
+    increaseQuantity: (state, payload: PayloadAction<number>) => {
+      state.items.map((item) =>
+        item.id === payload.payload
+          ? { ...item, quantity: item.quantity++ }
+          : item
+      );
+      state.totalItemPrice = state.items.reduce((prev, cur) => {
+        return prev + cur.price * cur.quantity;
+      }, 0);
+    },
+    decreaseQuantity: (state, payload: PayloadAction<number>) => {
+      state.items.map((item) =>
+        item.id === payload.payload
+          ? { ...item, quantity: item.quantity-- }
+          : item
+      );
+      state.totalItemPrice = state.items.reduce((prev, cur) => {
+        return prev + cur.price * cur.quantity;
+      }, 0);
+    },
     removeFromCart: (state, payload: PayloadAction<number>) => {
-      state.items.filter((item) => item.id !== payload.payload);
+      state.items = state.items.filter((item) => item.id !== payload.payload);
+      state.totalItemPrice = state.items.reduce((prev, cur) => {
+        return prev + cur.price * cur.quantity;
+      }, 0);
     },
     dismissCart: (state) => {
       state.isOpen = false;
     },
+    clearCart: (state) => {
+      state.items = [];
+    },
   },
 });
 
-export const { removeFromCart, addToCart, dismissCart } = cartSlice.actions;
+export const {
+  removeFromCart,
+  addToCart,
+  dismissCart,
+  decreaseQuantity,
+  increaseQuantity,
+  clearCart,
+} = cartSlice.actions;
 
 export const getCart = (state: RootState) => state.Cart;
 // export const getTotalPrice = (state)

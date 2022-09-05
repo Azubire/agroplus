@@ -16,11 +16,12 @@ import { Ionicons } from "@expo/vector-icons";
 import { AuthScreenProps } from "../../navigations/authStack/types";
 import { WelcomeScreenProps } from "../../navigations/Welcome/types";
 import { useAppDispatch } from "../../hooks/reduxHooks";
-import { getStarted } from "../../store/features/userSlice";
+import { getStarted, setUser } from "../../store/features/userSlice";
 
 import { getItemAsync, setItemAsync } from "expo-secure-store";
 import { convertRemToAbsolute } from "native-base/lib/typescript/theme/tools";
 import Spinner from "react-native-loading-spinner-overlay/lib";
+import CustomStatusBar from "../../components/CustomStatusBar";
 
 const ScreenThree = ({ navigation }: WelcomeScreenProps<"ScreenThree">) => {
   const [loading, setLoading] = React.useState<boolean>(false);
@@ -34,15 +35,12 @@ const ScreenThree = ({ navigation }: WelcomeScreenProps<"ScreenThree">) => {
     // console.log("onpress", item);
     setLoading(true);
 
-    navigation.navigate("Root", {
-      screen: "AppTabs",
-      params: { screen: "Home" },
-    });
-    setLoading(false);
+    dispatch(getStarted(false));
   };
 
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: colors.white }}>
+      <CustomStatusBar />
       {/* <Spinner visible={loading} animation="fade" /> */}
       <VStack
         justifyContent="space-between"

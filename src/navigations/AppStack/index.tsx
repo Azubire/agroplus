@@ -36,7 +36,11 @@ const RootStack = () => {
         name="AppTabs"
         component={AppTabs}
       />
-      <Stack.Screen name="Cart" component={Cart} />
+      <Stack.Screen
+        name="Cart"
+        options={{ title: "Cart Summary" }}
+        component={Cart}
+      />
       {/* distributors  */}
       <Stack.Screen name="Distributors" component={Distributors} />
       <Stack.Screen

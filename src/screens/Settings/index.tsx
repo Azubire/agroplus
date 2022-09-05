@@ -12,21 +12,26 @@ import {
   useTheme,
   VStack,
 } from "native-base";
+import { useAppSelector } from "../../hooks/reduxHooks";
+import { getUser } from "../../store/features/userSlice";
 
 const Settings = () => {
   const { colors } = useTheme();
 
+  const { user } = useAppSelector(getUser);
   return (
     <SafeAreaView>
       <CustomStatusBar style="light" backgroundColor={colors.tertiary[700]} />
       <Box>
         <HStack space={3} justifyContent="center" bg="tertiary.700" py={6}>
           <VStack space={1}>
-            <Text color={colors.lightText}>Username : Azubire</Text>
+            <Text color={colors.lightText}>Username :{user.username}</Text>
             <Text color={colors.lightText}>
               Account Type : <Text color={colors.green[500]}>Farmer</Text>
             </Text>
-            <Text color={colors.lightText}>Account Balance : Ghc 2000.00</Text>
+            <Text color={colors.lightText}>
+              Account Balance : Ghc {user.accountBalance}
+            </Text>
             <Text color={colors.lightText}>Total Sales : 20</Text>
           </VStack>
           <Avatar
@@ -50,7 +55,7 @@ const Settings = () => {
               editable={false}
               size="lg"
               variant="underlined"
-              defaultValue="Azubire Peter"
+              defaultValue={user.username}
             />
           </FormControl>
           <FormControl>
@@ -59,7 +64,7 @@ const Settings = () => {
               editable={false}
               size="lg"
               variant="underlined"
-              defaultValue="azubirepeter@gmail.com"
+              defaultValue={user.email}
             />
           </FormControl>
           <FormControl>
