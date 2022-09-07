@@ -1,4 +1,5 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 import { RootState } from "..";
 
 const fImg2 = require("../../../assets/app_images/farmers/img2.png");
@@ -8,6 +9,7 @@ const fImg5 = require("../../../assets/app_images/farmers/img5.png");
 const fImg6 = require("../../../assets/app_images/farmers/img6.png");
 const fImg7 = require("../../../assets/app_images/farmers/img7.png");
 const fImg8 = require("../../../assets/app_images/farmers/img8.png");
+const baseUrl = "http://192.168.43.35:3001";
 
 export interface IFarmer {
   id: number;
@@ -15,8 +17,8 @@ export interface IFarmer {
   title: string;
   description: string;
   price: number;
+  userId: number;
   category: string;
-  favourite: boolean;
   createdAt: string;
 }
 
@@ -33,62 +35,39 @@ const initialState: InitialStateTypes = {
   error: false,
   status: "idle",
   data: {
-    farmer: [
-      {
-        id: 1,
-        img: fImg4,
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, provident quaerat non alias quasi, nobis eius delectus ullam perferendis expedita vitae nihil, optio similique suscipit enim quibusdam temporibus quidem impedit.",
-        price: 452,
-        createdAt: "22nd May,2022 | 2:00PM",
-        title: "Fresh maize from the farm  and bla bla bla",
-        category: "cereal",
-        favourite: false,
-      },
-      {
-        id: 2,
-        img: fImg5,
-        title: "Fresh rice from the farm ",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, provident quaerat non alias quasi, nobis eius delectus ullam perferendis expedita vitae nihil, optio similique suscipit enim quibusdam temporibus quidem impedit.",
-        price: 452,
-        createdAt: "22nd May,2022 | 2:00PM",
-        category: "cereal",
-        favourite: true,
-      },
-    ],
+    farmer: [],
 
-    newProduce: [
-      {
-        id: 6,
-        img: fImg6,
-        title: "Fresh Potatoes ",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, provident quaerat non alias quasi, nobis eius delectus ullam perferendis expedita vitae nihil, optio similique suscipit enim quibusdam temporibus quidem impedit.",
-        price: 452,
-        createdAt: "22nd May,2022 | 2:00PM",
-        category: "cereal",
-        favourite: true,
-      },
-      {
-        id: 7,
-        img: fImg7,
-        title: "Sweet potatoes",
-        description:
-          "Lorem ipsum dolor sit amet consectetur adipisicing elit. Molestias, provident quaerat non alias quasi, nobis eius delectus ullam perferendis expedita vitae nihil, optio similique suscipit enim quibusdam temporibus quidem impedit.",
-        price: 452,
-        createdAt: "22nd May,2022 | 2:00PM",
-        category: "cereal",
-        favourite: false,
-      },
-    ],
+    newProduce: [],
   },
 };
+
+export const getAds = createAsyncThunk("ads", async () => {
+  const { data } = await axios.get<InitialStateTypes>(`${baseUrl}/farmers`);
+
+  return data;
+});
 
 const farmerSlice = createSlice({
   name: "farmers",
   initialState,
   reducers: {},
+  extraReducers(builder) {
+    builder.addCase(getAds.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(getAds.fulfilled, (state, action) => {
+      if (action.payload.error) {
+        state.status = "failed";
+      }
+      {
+        state.status = "success";
+        state.data = action.payload.data;
+      }
+    });
+    builder.addCase(getAds.rejected, (state) => {
+      state.status = "failed";
+    });
+  },
 });
 
 export const getFarmerState = (state: RootState) => state.Farmers;

@@ -43,7 +43,7 @@ const Cart = ({ navigation }: RootStackScreenProps<"Cart">) => {
   console.log(state.items);
 
   const verifyPayment = async () => {
-    const accountBalance = user.accountBalance;
+    const accountBalance = user.user.accountBalance;
     const totalAmount = state.totalItemPrice;
     if (accountBalance < totalAmount) {
       return {
@@ -108,7 +108,7 @@ const Cart = ({ navigation }: RootStackScreenProps<"Cart">) => {
           <Modal.Body>
             <Box>
               <Text bold fontSize="lg">
-                Account Balance: Ghc. {user.accountBalance}
+                Account Balance: Ghc. {user.user.accountBalance}
               </Text>
             </Box>
             <Box>
@@ -209,7 +209,9 @@ const Cart = ({ navigation }: RootStackScreenProps<"Cart">) => {
                 </Text>
                 <Box flex={0.5}>
                   <Image
-                    source={item.img}
+                    source={{
+                      uri: `http://192.168.43.35:3001/images/ads/${item.img}`,
+                    }}
                     style={{ width: 30, height: 30 }}
                     resizeMode="cover"
                   />

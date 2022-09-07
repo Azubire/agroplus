@@ -5,6 +5,7 @@ import CustomStatusBar from "../../components/CustomStatusBar";
 import {
   Avatar,
   Box,
+  Button,
   FormControl,
   HStack,
   Input,
@@ -14,18 +15,20 @@ import {
 } from "native-base";
 import { useAppSelector } from "../../hooks/reduxHooks";
 import { getUser } from "../../store/features/userSlice";
+import { screenParamList } from "../../navigations/SettingStack/types";
+import { TabScreenProps } from "../../navigations/appTabs/types";
 
-const Settings = () => {
+const Settings = ({ navigation }: TabScreenProps<"Settings">) => {
   const { colors } = useTheme();
 
   const { user } = useAppSelector(getUser);
   return (
     <SafeAreaView>
       <CustomStatusBar style="light" backgroundColor={colors.tertiary[700]} />
-      <Box>
-        <HStack space={3} justifyContent="center" bg="tertiary.700" py={6}>
+      <Box bg="tertiary.700">
+        <HStack space={3} justifyContent="space-evenly" py={6}>
           <VStack space={1}>
-            <Text color={colors.lightText}>Username :{user.username}</Text>
+            <Text color={colors.lightText}>Username : {user.username}</Text>
             <Text color={colors.lightText}>
               Account Type : <Text color={colors.green[500]}>Farmer</Text>
             </Text>
@@ -41,6 +44,20 @@ const Settings = () => {
           >
             Az
           </Avatar>
+        </HStack>
+        <HStack justifyContent="space-evenly" alignItems="center" mb={3}>
+          <Text color={colors.lightText}>
+            To become a distributor, apply here
+          </Text>
+          <Button
+            colorScheme="danger"
+            w="1/3"
+            onPress={() => {
+              navigation.navigate("BecomeDistributor");
+            }}
+          >
+            Apply
+          </Button>
         </HStack>
       </Box>
 

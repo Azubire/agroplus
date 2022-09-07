@@ -1,12 +1,12 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import axios from "axios";
 import { RootState } from "..";
 
-const img1 = require("../../../assets/app_images/distributors/img1.jpg");
-const img2 = require("../../../assets/app_images/distributors/img2.jpg");
+const baseUrl = "http://192.168.43.35:3001";
 
 export interface IDistributor {
   id: number;
-  img: any;
+  img: string;
   name: string;
   email: string;
   contact: string;
@@ -14,6 +14,7 @@ export interface IDistributor {
   profile: string;
   createdAt: string;
   transactions: number;
+  userId: number;
   location: string;
   ratings: number;
 }
@@ -24,59 +25,74 @@ interface IInitialState {
   data: IDistributor[];
 }
 
+export const createDistributor = createAsyncThunk(
+  "distributor/create",
+  async (formData: any) => {
+    const { data } = await axios.post<{ error: boolean }>(
+      `${baseUrl}/distributors/register`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    return data;
+  }
+);
+
+export const getDistributorsFromDb = createAsyncThunk(
+  "distributors",
+  async () => {
+    const { data } = await axios.get<{ error: boolean; data: IDistributor[] }>(
+      `${baseUrl}/distributors`
+    );
+
+    return data;
+  }
+);
+
 const initialState: IInitialState = {
   error: false,
   status: "idle",
-  data: [
-    {
-      id: 1,
-      img: img1,
-      name: "Md Crops Ghana",
-      email: "mdghana@gmail.com",
-      contact: "+2335687598",
-      website: "https://mdghana.com",
-      profile:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eligendi laboriosam voluptates possimus atque debitis ab officiis. Odit laboriosam, nemo, adipisci reiciendis iusto voluptate facere possimus, eligendi omnis distinctio consequuntur. Dolore!",
-      createdAt: "2nd June 2022 15:05PM",
-      transactions: 48,
-      location: "Greater Accra, Tema",
-      ratings: 234,
-    },
-    {
-      id: 2,
-      img: img2,
-      name: "Dealgood ventures",
-      email: "mdghana@gmail.com",
-      contact: "+2335687598",
-      website: "https://mdghana.com",
-      profile:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eligendi laboriosam voluptates possimus atque debitis ab officiis. Odit laboriosam, nemo, adipisci reiciendis iusto voluptate facere possimus, eligendi omnis distinctio consequuntur. Dolore!",
-      createdAt: "3rd June 2022 15:05PM",
-      transactions: 25,
-      location: "Northern Region, Tamale",
-      ratings: 78,
-    },
-    {
-      id: 3,
-      img: img1,
-      name: "Cash Crops",
-      email: "mdghana@gmail.com",
-      contact: "+2335687598",
-      website: "https://mdghana.com",
-      profile:
-        "Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eligendi laboriosam voluptates possimus atque debitis ab officiis. Odit laboriosam, nemo, adipisci reiciendis iusto voluptate facere possimus, eligendi omnis distinctio consequuntur. Dolore!",
-      createdAt: "2nd June 2022 15:05PM",
-      transactions: 975,
-      location: "Ashanti Region, Kumasi",
-      ratings: 154,
-    },
-  ],
+  data: [],
 };
 
 const distributorSlice = createSlice({
   name: "distributor",
   initialState,
   reducers: {},
+  extraReducers(builder) {
+    builder.addCase(createDistributor.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(createDistributor.fulfilled, (state, action) => {
+      if (action.payload.error) {
+        state.status = "failed";
+      } else {
+        state.status = "success";
+        // state.data = action.payload.data;
+      }
+    });
+    builder.addCase(createDistributor.rejected, (state) => {
+      state.status = "failed";
+    });
+    builder.addCase(getDistributorsFromDb.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(getDistributorsFromDb.fulfilled, (state, action) => {
+      if (action.payload.error) {
+        state.status = "failed";
+      } else {
+        state.status = "success";
+        state.data = action.payload.data;
+      }
+    });
+    builder.addCase(getDistributorsFromDb.rejected, (state) => {
+      state.status = "failed";
+    });
+  },
 });
 
 export const getDistributors = (state: RootState) => state.Distributors;

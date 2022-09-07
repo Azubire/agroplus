@@ -13,10 +13,7 @@ import {
   View,
   WarningOutlineIcon,
 } from "native-base";
-import { DrawerScreenPropsType } from "../navigations/AppDrawer/Types";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { TabScreenProps } from "../navigations/appTabs/types";
-import CustomStatusBar from "../components/CustomStatusBar";
 import { Image, ScrollView, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
@@ -26,32 +23,43 @@ import { joiResolver } from "@hookform/resolvers/joi";
 import Joi from "joi";
 import * as ImagePicker from "expo-image-picker";
 import mime from "mime";
-import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
-import { createAd, getAdState } from "../store/features/adSlice";
-import { getUser } from "../store/features/userSlice";
+import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
+import {
+  createDistributor,
+  getDistributors,
+} from "../../store/features/distributorSlice";
+import { getUser } from "../../store/features/userSlice";
+import { RootStackScreenProps } from "../../navigations/AppStack/types";
+import CustomStatusBar from "../../components/CustomStatusBar";
 
 interface IFormData {
-  title: string;
-  category: string;
-  price: number;
-  description: string;
+  name: string;
+  email: string;
+  contact: string;
+  website: string;
+  profile: string;
+  location: string;
 }
 
 const schema = Joi.object<any, true, IFormData>({
-  title: Joi.string().max(30).required(),
-  category: Joi.string().required(),
-  price: Joi.number().required(),
-  description: Joi.string().required(),
+  name: Joi.string().required(),
+  email: Joi.string().required(),
+  website: Joi.string().required(),
+  contact: Joi.string().required(),
+  profile: Joi.string().required(),
+  location: Joi.string().required(),
 });
 
-const UploadCrop: React.FC<TabScreenProps<"UploadCrop">> = ({ navigation }) => {
+const BecomeDistributor = ({
+  navigation,
+}: RootStackScreenProps<"BecomeDistributor">) => {
   const [category, setCategory] = React.useState("");
   const [image, setImage] = React.useState<any>();
   const [isImage, setIsImage] = React.useState(false);
 
   const { colors } = useTheme();
   const dispatch = useAppDispatch();
-  const state = useAppSelector(getAdState);
+  const state = useAppSelector(getDistributors);
   const { user } = useAppSelector(getUser);
 
   //react-hook-form
@@ -104,7 +112,7 @@ const UploadCrop: React.FC<TabScreenProps<"UploadCrop">> = ({ navigation }) => {
     };
     const data = new FormData();
     //@ts-ignore
-    data.append("adImage", newImg);
+    data.append("distributor", newImg);
     data.append("userId", user.userId.toString());
 
     for (let key in body) {
@@ -117,10 +125,10 @@ const UploadCrop: React.FC<TabScreenProps<"UploadCrop">> = ({ navigation }) => {
   const onSubmit: SubmitHandler<IFormData> = async (data) => {
     if (!isImage) return;
     const formData = createFormData(image, data);
-    console.log(formData);
+    // console.log(formData);
 
     try {
-      const response = await dispatch(createAd(formData)).unwrap();
+      const response = await dispatch(createDistributor(formData)).unwrap();
       console.log("data", response);
       reset();
     } catch (error) {
@@ -130,19 +138,19 @@ const UploadCrop: React.FC<TabScreenProps<"UploadCrop">> = ({ navigation }) => {
 
   return (
     <SafeAreaView>
-      <CustomStatusBar />
+      <CustomStatusBar style="light" />
 
       {user.userToken ? (
         <ScrollView>
           <Box px={4}>
-            <Text fontSize="lg" textAlign="right" mt={4}>
-              Create An Advert
+            <Text fontSize="lg" textAlign="center" mt={4}>
+              Apply to become a distributor
             </Text>
             {/* title */}
-            <FormControl mt={4} isInvalid={Boolean(errors.title)} isRequired>
-              <FormControl.Label>Title/tag</FormControl.Label>
+            <FormControl mt={4} isInvalid={Boolean(errors.name)}>
+              <FormControl.Label>Name</FormControl.Label>
               <Controller
-                name="title"
+                name="name"
                 control={control}
                 defaultValue=""
                 render={({ field: { onChange } }) => (
@@ -150,114 +158,92 @@ const UploadCrop: React.FC<TabScreenProps<"UploadCrop">> = ({ navigation }) => {
                     <Input
                       onChangeText={onChange}
                       variant="outline"
-                      placeholder="Title Of Your Ad"
+                      placeholder="Enter name of your business"
                     />
-                    <Box flexDirection="row" justifyContent="space-between">
-                      <FormControl.ErrorMessage
-                        leftIcon={<WarningOutlineIcon size="xs" />}
-                      >
-                        {errors.title?.message}
-                      </FormControl.ErrorMessage>
-
-                      <FormControl.HelperText>0/30</FormControl.HelperText>
-                    </Box>
-                  </>
-                )}
-              />
-            </FormControl>
-            {/* category  */}
-            <FormControl mt={4} isInvalid={Boolean(errors.category)}>
-              <FormControl.Label>Select type of crop</FormControl.Label>
-              <Controller
-                name="category"
-                control={control}
-                defaultValue=""
-                render={({ field: { onChange } }) => (
-                  <>
-                    <Select
-                      selectedValue={category}
-                      minWidth="200"
-                      accessibilityLabel="Choose Category"
-                      placeholder="Choose Category"
-                      _selectedItem={{
-                        bg: "tertiary.600",
-                        endIcon: <CheckIcon size="5" />,
-                      }}
-                      mt={1}
-                      onValueChange={(text) => {
-                        setCategory(text);
-                        return onChange(text);
-                      }}
-                    >
-                      <Select.Item label="Vegetable" value="1" />
-                      <Select.Item label="Cereal" value="2" />
-                      <Select.Item label="Root & Tuber" value="3" />
-                    </Select>
                     <FormControl.ErrorMessage
                       leftIcon={<WarningOutlineIcon size="xs" />}
                     >
-                      Please select a category!
+                      {errors.name?.message}
                     </FormControl.ErrorMessage>
                   </>
                 )}
               />
             </FormControl>
-            {/* quantity  */}
-            {/* <FormControl mt={4} isInvalid={Boolean(errors.quantity)}>
-            <FormControl.Label>Crop Quantity</FormControl.Label>
-            <Controller
-              name="quantity"
-              control={control}
-              defaultValue={undefined}
-              render={({ field: { onChange } }) => (
-                <>
-                  <Input
-                    onChangeText={onChange}
-                    variant="outline"
-                    placeholder="Enter crop quantity"
-                  />
-                  <FormControl.ErrorMessage
-                    leftIcon={<WarningOutlineIcon size="xs" />}
-                  >
-                    {errors.quantity?.message}
-                  </FormControl.ErrorMessage>
-                </>
-              )}
-            />
-          </FormControl> */}
-            {/* price */}
-            <FormControl mt={4} isInvalid={Boolean(errors.price)}>
-              <FormControl.Label>Price</FormControl.Label>
+
+            {/* email */}
+            <FormControl mt={4} isInvalid={Boolean(errors.email)}>
+              <FormControl.Label>Email</FormControl.Label>
               <Controller
-                name="price"
+                name="email"
                 control={control}
                 defaultValue={undefined}
                 render={({ field: { onChange } }) => (
                   <>
                     <Input
                       onChangeText={onChange}
-                      InputRightElement={
-                        <FormControl.HelperText mr={2}>
-                          Ghc
-                        </FormControl.HelperText>
-                      }
                       variant="outline"
-                      placeholder="Describe into details"
+                      placeholder="Enter email"
                     />
                     <FormControl.ErrorMessage
                       leftIcon={<WarningOutlineIcon size="xs" />}
                     >
-                      {errors.price?.message}
+                      {errors.email?.message}
                     </FormControl.ErrorMessage>
                   </>
                 )}
               />
             </FormControl>
-            {/* description  */}
-            <FormControl mt={4} isInvalid={Boolean(errors.description)}>
-              <FormControl.Label>Description</FormControl.Label>
+            {/* contact  */}
+            <FormControl mt={4} isInvalid={Boolean(errors.contact)}>
+              <FormControl.Label>Contact</FormControl.Label>
               <Controller
-                name="description"
+                name="contact"
+                control={control}
+                defaultValue=""
+                render={({ field: { onChange } }) => (
+                  <>
+                    <Input
+                      onChangeText={onChange}
+                      variant="outline"
+                      placeholder="Enter your contact"
+                    />
+                    <FormControl.ErrorMessage
+                      leftIcon={<WarningOutlineIcon size="xs" />}
+                    >
+                      {errors.contact?.message}
+                    </FormControl.ErrorMessage>
+                  </>
+                )}
+              />
+            </FormControl>
+            {/* website  */}
+            <FormControl mt={4} isInvalid={Boolean(errors.website)}>
+              <FormControl.Label>website</FormControl.Label>
+              <Controller
+                name="website"
+                control={control}
+                defaultValue=""
+                render={({ field: { onChange } }) => (
+                  <>
+                    <Input
+                      onChangeText={onChange}
+                      variant="outline"
+                      placeholder="Enter your website"
+                    />
+                    <FormControl.ErrorMessage
+                      leftIcon={<WarningOutlineIcon size="xs" />}
+                    >
+                      {errors.website?.message}
+                    </FormControl.ErrorMessage>
+                  </>
+                )}
+              />
+            </FormControl>
+            {/* profile  */}
+            <FormControl mt={4} isInvalid={Boolean(errors.profile)}>
+              <FormControl.Label>Profile</FormControl.Label>
+              <Controller
+                name="profile"
                 control={control}
                 defaultValue=""
                 render={({ field: { onChange } }) => (
@@ -266,12 +252,35 @@ const UploadCrop: React.FC<TabScreenProps<"UploadCrop">> = ({ navigation }) => {
                       onChangeText={onChange}
                       numberOfLines={3}
                       variant="outline"
-                      placeholder="Describe into details"
+                      placeholder="Enter your profile"
                     />
                     <FormControl.ErrorMessage
                       leftIcon={<WarningOutlineIcon size="xs" />}
                     >
-                      {errors.description?.message}
+                      {errors.profile?.message}
+                    </FormControl.ErrorMessage>
+                  </>
+                )}
+              />
+            </FormControl>
+            {/* location  */}
+            <FormControl mt={4} isInvalid={Boolean(errors.location)}>
+              <FormControl.Label>Location</FormControl.Label>
+              <Controller
+                name="location"
+                control={control}
+                defaultValue=""
+                render={({ field: { onChange } }) => (
+                  <>
+                    <Input
+                      onChangeText={onChange}
+                      variant="outline"
+                      placeholder="Enter your location"
+                    />
+                    <FormControl.ErrorMessage
+                      leftIcon={<WarningOutlineIcon size="xs" />}
+                    >
+                      {errors.location?.message}
                     </FormControl.ErrorMessage>
                   </>
                 )}
@@ -334,13 +343,13 @@ const UploadCrop: React.FC<TabScreenProps<"UploadCrop">> = ({ navigation }) => {
               <Button
                 isLoading={Boolean(state.status === "loading")}
                 fontSize="3xl"
-                colorScheme="tertiary"
+                colorScheme="info"
                 leftIcon={
                   <Ionicons name="add" size={20} color={colors.light[100]} />
                 }
                 onPress={handleSubmit(onSubmit)}
               >
-                Upload
+                Submit
               </Button>
             </View>
           </Box>
@@ -363,4 +372,4 @@ const UploadCrop: React.FC<TabScreenProps<"UploadCrop">> = ({ navigation }) => {
   );
 };
 
-export default UploadCrop;
+export default BecomeDistributor;

@@ -22,7 +22,7 @@ const initialState: stateProps = {
     userId: -1,
     username: "",
     email: "",
-    accountBalance: 0,
+    accountBalance: 1000,
   },
   showGetStarted: true,
 };

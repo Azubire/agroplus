@@ -47,9 +47,9 @@ const FarmerDetails = ({
     title: "",
     img: "",
     description: "",
+    userId: 0,
     category: "",
     createdAt: "",
-    favourite: false,
   });
 
   const dispatch = useAppDispatch();
@@ -80,8 +80,10 @@ const FarmerDetails = ({
               {/* heading / image  */}
               <Box>
                 <Image
-                  source={produce?.img}
-                  alt={produce.title}
+                  source={{
+                    uri: `http://192.168.43.35:3001/images/ads/${farmer[0].img}`,
+                  }}
+                  alt={farmer[0].title}
                   style={{ height: 200, width: "100%" }}
                   resizeMode="cover"
                 />
@@ -95,26 +97,26 @@ const FarmerDetails = ({
                 alignItems="center"
               >
                 <Heading flex={3} size="sm">
-                  {produce?.title}
+                  {farmer[0].title}
                 </Heading>
                 <Button flex={1} rounded={30} variant="outline">
-                  {"Ghc. " + produce?.price}
+                  {"Ghc. " + farmer[0].price}
                 </Button>
               </HStack>
               <VStack>
                 <HStack>
                   <Text>{`4.8 `}</Text>
                   <AirbnbRating count={5} size={12} showRating={false} />
-                  {/* <Text>{produce?.ratings}</Text> */}
+                  {/* <Text>{farmer[0].ratings}</Text> */}
                 </HStack>
-                {/* <Text mt={2}>We are located at {produce?.location}</Text> */}
+                {/* <Text mt={2}>We are located at {farmer[0].location}</Text> */}
                 <Text color={colors.tertiary[700]}>
-                  Posted on: {produce?.createdAt}
+                  Posted on: {farmer[0].createdAt}
                 </Text>
               </VStack>
               {/* description  */}
               <Box mt={6} mb={10}>
-                <Text>{produce?.description}</Text>
+                <Text>{farmer[0].description}</Text>
               </Box>
               {/* action area  */}
               <HStack mt={3} justifyContent="flex-end" space={3}>
@@ -170,7 +172,9 @@ const FarmerDetails = ({
                 <Box>
                   <AspectRatio w="100%" ratio={4 / 3}>
                     <Image
-                      source={item.img}
+                      source={{
+                        uri: `http://192.168.43.35:3001/images/ads/${item.img}`,
+                      }}
                       width={"full"}
                       height={"full"}
                       alt={item.title}
@@ -185,7 +189,7 @@ const FarmerDetails = ({
                       as={Ionicons}
                       name="ios-heart-circle"
                       size={8}
-                      color={`${item.favourite ? "rose.600" : "gray.500"}`}
+                      color={`${"rose.600"}`}
                     />
                   </TouchableOpacity>
                 </Box>

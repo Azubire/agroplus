@@ -145,7 +145,9 @@ const Distributors: React.FC<RootStackScreenProps<"Distributors">> = ({
                 <Box>
                   <AspectRatio w="100%" ratio={4 / 3}>
                     <Image
-                      source={item.img}
+                      source={{
+                        uri: `http://192.168.43.35:3001/images/distributors/${item.img}`,
+                      }}
                       // borderTopRadius={15}
                       width={"full"}
                       height={"full"}

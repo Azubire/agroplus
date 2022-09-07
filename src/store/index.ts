@@ -3,6 +3,7 @@ import UserReducer from "./features/userSlice";
 import FarmerReducer from "./features/famerSlice";
 import DistributorReducer from "./features/distributorSlice";
 import CartReducer from "./features/cartSlice";
+import AdSliceReducer from "./features/adSlice";
 
 const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ const store = configureStore({
     Farmers: FarmerReducer,
     Distributors: DistributorReducer,
     Cart: CartReducer,
+    Ad: AdSliceReducer,
   },
 });
 

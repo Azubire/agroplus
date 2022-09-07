@@ -72,7 +72,9 @@ const Cart = () => {
                   </Text>
                   <Box flex={0.5}>
                     <Image
-                      source={item.img}
+                      source={{
+                        uri: `http://192.168.43.35:3001/images/ads/${item.img}`,
+                      }}
                       style={{ width: 30, height: 30 }}
                       resizeMode="cover"
                     />

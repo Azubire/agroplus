@@ -15,6 +15,7 @@ import NewsDetails from "../../screens/Explore/NewsDetails";
 import Farmer from "../../screens/Farmer/Farmer";
 import FarmerDetails from "../../screens/Farmer/FarmerDetails";
 import Cart from "../../screens/cart";
+import BecomeDistributor from "../../screens/Distributor/Add";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -56,6 +57,7 @@ const RootStack = () => {
       <Stack.Screen name="HelpAndSupport" component={HelpAndSupport} />
       <Stack.Screen name="TermsAndConditions" component={TermsAndConditions} />
       <Stack.Screen name="NewsDetails" component={NewsDetails} />
+      <Stack.Screen name="BecomeDistributor" component={BecomeDistributor} />
       <Stack.Screen
         name="AuthStack"
         options={{ headerTitle: "" }}

@@ -67,7 +67,9 @@ const Farmer = ({ navigation }: RootStackScreenProps<"FarmProduce">) => {
                 <Box>
                   <AspectRatio w="100%" ratio={4 / 3}>
                     <Image
-                      source={item.img}
+                      source={{
+                        uri: `http://192.168.43.35:3001/images/ads/${item.img}`,
+                      }}
                       width={"full"}
                       height={"full"}
                       alt={item.title}
@@ -82,7 +84,7 @@ const Farmer = ({ navigation }: RootStackScreenProps<"FarmProduce">) => {
                       as={Ionicons}
                       name="ios-heart-circle"
                       size={8}
-                      color={`${item.favourite ? "rose.600" : "gray.500"}`}
+                      color={`${"rose.600"}`}
                     />
                   </TouchableOpacity>
                 </Box>

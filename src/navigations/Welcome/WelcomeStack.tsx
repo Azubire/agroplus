@@ -16,9 +16,9 @@ const WelcomeStack = () => {
         headerShown: false,
       }}
     >
-      {/* <Stack.Screen name="Welcome" component={WelcomeScreen} /> */}
-      {/* <Stack.Screen name="ScreenOne" component={ScreenOne} /> */}
-      {/* <Stack.Screen name="ScreenTwo" component={ScreenTwo} /> */}
+      {/* <Stack.Screen name="Welcome" component={WelcomeScreen} />
+      <Stack.Screen name="ScreenOne" component={ScreenOne} />
+      <Stack.Screen name="ScreenTwo" component={ScreenTwo} /> */}
       <Stack.Screen name="ScreenThree" component={ScreenThree} />
     </Stack.Navigator>
   );

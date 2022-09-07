@@ -27,27 +27,45 @@ import { useScrollToTop } from "@react-navigation/native";
 import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
 import {
   getDistributors,
+  getDistributorsFromDb,
   IDistributor,
 } from "../store/features/distributorSlice";
-import { getFarmerState, IFarmer } from "../store/features/famerSlice";
+import { getAds, getFarmerState, IFarmer } from "../store/features/famerSlice";
 import { addToCart } from "../store/features/cartSlice";
+import { getUser } from "../store/features/userSlice";
 
 const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
-  const [loading, setLoading] = React.useState(true);
-  const [distributors, setDistributors] = React.useState<IDistributor[]>([]);
-  const [farmers, setFarmers] = React.useState<IFarmer[]>([]);
-  const [newProduce, setNewProduce] = React.useState<IFarmer[]>([]);
+  // const [loading, setLoading] = React.useState(true);
+  // const [distributors, setDistributors] = React.useState<IDistributor[]>([]);
+  // const [farmers, setFarmers] = React.useState<IFarmer[]>([]);
+  // const [newProduce, setNewProduce] = React.useState<IFarmer[]>([]);
 
   const dispatch = useAppDispatch();
   const distributorState = useAppSelector(getDistributors);
-  const famerState = useAppSelector(getFarmerState);
+  const adState = useAppSelector(getFarmerState);
+  const { user } = useAppSelector(getUser);
   const { colors } = useTheme();
 
+  const fetchAds = async () => {
+    try {
+      const data = await dispatch(getAds()).unwrap();
+      // console.log("data", data);
+    } catch (error) {
+      console.log("eror", error);
+    }
+  };
+  const fetchDistributors = async () => {
+    try {
+      const dData = await dispatch(getDistributorsFromDb()).unwrap();
+      // console.log("dData", dData);
+    } catch (error) {
+      console.log("eror", error);
+    }
+  };
+
   React.useEffect(() => {
-    setDistributors(distributorState.data);
-    setFarmers(famerState.data.farmer);
-    setNewProduce(famerState.data.newProduce);
-    setLoading(false);
+    fetchAds();
+    fetchDistributors();
   }, []);
 
   const ref = useRef(null);
@@ -56,14 +74,19 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
   return (
     <ScrollView ref={ref}>
       <StatusBar style="light" />
-      {loading ? (
+      {Boolean(
+        distributorState.status === "loading" ||
+          distributorState.status === "idle" ||
+          adState.status === "loading" ||
+          adState.status === "idle"
+      ) ? (
         <ActivityIndicator size="large" />
       ) : (
         <Box mb={8}>
           {/* Welcome msessage  */}
           <VStack px={4} pt={4}>
             <Text fontSize="lg" bold>
-              Hi Michael ✋
+              Hello {user.username ? user.username.split(" ")[1] : "there"} ✋
             </Text>
             <Text>Let's find you a distributor </Text>
           </VStack>
@@ -142,7 +165,7 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
             </HStack>
             <FlatList
               horizontal={true}
-              data={distributors}
+              data={distributorState.data}
               renderItem={({ item }) => (
                 <TouchableOpacity
                   activeOpacity={0.5}
@@ -164,7 +187,9 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
                     <Box>
                       <AspectRatio w="100%" ratio={4 / 3}>
                         <Image
-                          source={item.img}
+                          source={{
+                            uri: `http://192.168.43.35:3001/images/distributors/${item.img}`,
+                          }}
                           borderTopRadius={15}
                           width={"full"}
                           height={"full"}
@@ -223,7 +248,7 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
             </HStack>
             <FlatList
               horizontal={true}
-              data={farmers}
+              data={adState.data.farmer}
               renderItem={({ item, index }) => (
                 <TouchableOpacity
                   style={{ flex: 1, marginBottom: 10 }}
@@ -245,7 +270,9 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
                     <Box>
                       <AspectRatio w="100%" ratio={4 / 3}>
                         <Image
-                          source={item.img}
+                          source={{
+                            uri: `http://192.168.43.35:3001/images/ads/${item.img}`,
+                          }}
                           width={"full"}
                           height={"full"}
                           alt={item.title}
@@ -259,7 +286,7 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
                           as={Ionicons}
                           name="ios-heart-circle"
                           size={8}
-                          color={`${item.favourite ? "rose.600" : "gray.500"}`}
+                          color={`${"rose.600"}`}
                         />
                       </TouchableOpacity>
                     </Box>
@@ -344,7 +371,7 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
             </HStack>
             <FlatList
               horizontal={true}
-              data={newProduce}
+              data={adState.data.newProduce}
               renderItem={({ item, index }) => (
                 <TouchableOpacity
                   style={{ flex: 1, marginBottom: 10 }}
@@ -366,7 +393,9 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
                     <Box>
                       <AspectRatio w="100%" ratio={4 / 3}>
                         <Image
-                          source={item.img}
+                          source={{
+                            uri: `http://192.168.43.35:3001/images/ads/${item.img}`,
+                          }}
                           width={"full"}
                           height={"full"}
                           alt={item.title}
@@ -379,7 +408,7 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
                           as={Ionicons}
                           name="ios-heart-circle"
                           size={8}
-                          color={`${item.favourite ? "rose.600" : "gray.500"}`}
+                          color={`${"rose.600"}`}
                         />
                       </TouchableOpacity>
                     </Box>

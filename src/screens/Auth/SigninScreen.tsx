@@ -136,7 +136,7 @@ const SigninScreen: React.FC<AuthScreenProps<"Signin">> = ({ navigation }) => {
                       <Icon size={21} ml={3} as={<Ionicons name="mail" />} />
                     }
                     bgColor={colors.gray[300]}
-                    placeholder="Enter password"
+                    placeholder="Enter email"
                   />
                   <FormControl.ErrorMessage
                     leftIcon={<WarningOutlineIcon size="xs" />}

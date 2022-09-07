@@ -51,7 +51,9 @@ const DistributorDetails = ({
           {/* heading / image  */}
           <Box>
             <Image
-              source={distributor?.img}
+              source={{
+                uri: `http://192.168.43.35:3001/images/distributors/${distributor?.img}`,
+              }}
               style={{ height: 200, width: "100%" }}
               resizeMode="cover"
             />
