@@ -2,11 +2,13 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "..";
 
 export interface ICart {
-  id: number;
+  productId: number;
   img: any;
   title: string;
   price: number;
-  quantity: number;
+  qty: number;
+  userId: number;
+  distributorId: number;
 }
 
 interface IInitialState {
@@ -26,11 +28,13 @@ const cartSlice = createSlice({
   initialState,
   reducers: {
     addToCart: (state, payload: PayloadAction<ICart>) => {
-      const item = state.items.find((item) => item.id === payload.payload.id);
+      const item = state.items.find(
+        (item) => item.productId === payload.payload.productId
+      );
       if (item) {
         state.items = state.items.map((item) =>
-          item.id === payload.payload.id
-            ? { ...item, quantity: item.quantity + 1 }
+          item.productId === payload.payload.productId
+            ? { ...item, quantity: item.qty + 1 }
             : item
         );
       } else {
@@ -38,34 +42,36 @@ const cartSlice = createSlice({
       }
 
       state.totalItemPrice = state.items.reduce((prev, cur) => {
-        return prev + cur.price * cur.quantity;
+        return prev + cur.price * cur.qty;
       }, 0);
       state.isOpen = true;
     },
     increaseQuantity: (state, payload: PayloadAction<number>) => {
       state.items.map((item) =>
-        item.id === payload.payload
-          ? { ...item, quantity: item.quantity++ }
+        item.productId === payload.payload
+          ? { ...item, quantity: item.qty++ }
           : item
       );
       state.totalItemPrice = state.items.reduce((prev, cur) => {
-        return prev + cur.price * cur.quantity;
+        return prev + cur.price * cur.qty;
       }, 0);
     },
     decreaseQuantity: (state, payload: PayloadAction<number>) => {
       state.items.map((item) =>
-        item.id === payload.payload
-          ? { ...item, quantity: item.quantity-- }
+        item.productId === payload.payload
+          ? { ...item, quantity: item.qty-- }
           : item
       );
       state.totalItemPrice = state.items.reduce((prev, cur) => {
-        return prev + cur.price * cur.quantity;
+        return prev + cur.price * cur.qty;
       }, 0);
     },
     removeFromCart: (state, payload: PayloadAction<number>) => {
-      state.items = state.items.filter((item) => item.id !== payload.payload);
+      state.items = state.items.filter(
+        (item) => item.productId !== payload.payload
+      );
       state.totalItemPrice = state.items.reduce((prev, cur) => {
-        return prev + cur.price * cur.quantity;
+        return prev + cur.price * cur.qty;
       }, 0);
     },
     dismissCart: (state) => {

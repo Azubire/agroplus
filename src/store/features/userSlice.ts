@@ -10,9 +10,26 @@ interface stateProps {
     userId: number;
     username: string;
     email: string;
+    img: string;
     accountBalance: number;
+    totalSales: number;
   };
   showGetStarted: boolean;
+  isDistributor:
+    | {
+        id: number;
+        img: string;
+        name: string;
+        email: string;
+        contact: string;
+        website: string;
+        profile: string;
+        transactions: number;
+        location: string;
+        ratings: number;
+        createdAt: string;
+      }
+    | undefined;
 }
 
 const initialState: stateProps = {
@@ -22,9 +39,12 @@ const initialState: stateProps = {
     userId: -1,
     username: "",
     email: "",
-    accountBalance: 1000,
+    img: "",
+    accountBalance: 0,
+    totalSales: 0,
   },
   showGetStarted: true,
+  isDistributor: undefined,
 };
 
 interface ISignupResponse {
@@ -61,8 +81,25 @@ interface ISigninpResponse {
     userId: number;
     username: string;
     email: string;
+    img: string;
     accountBalance: number;
+    totalSales: number;
   };
+  isDistributor:
+    | {
+        id: number;
+        img: string;
+        name: string;
+        email: string;
+        contact: string;
+        website: string;
+        profile: string;
+        transactions: number;
+        location: string;
+        ratings: number;
+        createdAt: string;
+      }
+    | undefined;
 }
 
 export const signin = createAsyncThunk(
@@ -76,6 +113,37 @@ export const signin = createAsyncThunk(
   }
 );
 
+export const updateProfilePhoto = createAsyncThunk(
+  "user/update/profile",
+  async (formData: { photo: any; id: number }) => {
+    const { data } = await axios.put<{ error: boolean; img: string }>(
+      `${baseUrl}/auth/update/${formData.id}`,
+      formData.photo,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      }
+    );
+
+    return data;
+  }
+);
+
+export const verifyToken = createAsyncThunk(
+  "verifyToken",
+  async (requestData: { email: string; userToken: string }) => {
+    const { data } = await axios.post<ISigninpResponse>(
+      `${baseUrl}/auth/verifytoken`,
+      requestData.email,
+      {
+        headers: { Authorization: `Bearer ${requestData.userToken}` },
+      }
+    );
+    return data;
+  }
+);
+
 const userSlice = createSlice({
   name: "User",
   initialState: initialState,
@@ -84,10 +152,25 @@ const userSlice = createSlice({
       state.showGetStarted = action.payload;
     },
     setUser: (state) => {
-      state.user.userToken = "sdgjhsgdhghd";
+      // state.user.userToken = "sdgjhsgdhghd";
+    },
+    updateAccountBalance: (state, action: PayloadAction<number>) => {
+      state.user.accountBalance = action.payload;
     },
     pay: (state, action: PayloadAction<number>) => {
       state.user.accountBalance = state.user.accountBalance - action.payload;
+    },
+    logout: (state) => {
+      (state.user = {
+        userToken: "",
+        userId: -1,
+        username: "",
+        email: "",
+        img: "",
+        accountBalance: 0,
+        totalSales: 0,
+      }),
+        (state.isDistributor = undefined);
     },
   },
   extraReducers(builder) {
@@ -113,15 +196,40 @@ const userSlice = createSlice({
       } else {
         state.status = "success";
         state.user = action.payload.user;
+        state.isDistributor = action.payload.isDistributor;
       }
     }),
       builder.addCase(signin.rejected, (state) => {
         state.status = "failed";
       });
+    builder.addCase(updateProfilePhoto.pending, (state) => {
+      state.status = "loading";
+    });
+    builder.addCase(updateProfilePhoto.fulfilled, (state, action) => {
+      if (action.payload.error) {
+        state.status = "failed";
+      } else {
+        state.status = "success";
+        state.user.img = action.payload.img;
+      }
+    });
+    builder.addCase(updateProfilePhoto.rejected, (state) => {
+      state.status = "failed";
+    });
+    builder.addCase(verifyToken.fulfilled, (state, action) => {
+      if (action.payload.error) {
+        state.status = "failed";
+      } else {
+        state.status = "success";
+        state.user = action.payload.user;
+        state.isDistributor = action.payload.isDistributor;
+      }
+    });
   },
 });
 
-export const { getStarted, pay, setUser } = userSlice.actions;
+export const { getStarted, pay, setUser, logout, updateAccountBalance } =
+  userSlice.actions;
 
 export const getUser = (state: RootState) => state.User;
 

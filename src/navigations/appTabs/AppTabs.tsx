@@ -12,6 +12,7 @@ import { Badge, Box, HStack, useTheme, VStack } from "native-base";
 import Settings from "../../screens/Settings";
 import { useAppSelector } from "../../hooks/reduxHooks";
 import { getCart } from "../../store/features/cartSlice";
+import { TouchableOpacity } from "react-native";
 
 const Tab = createBottomTabNavigator<TabParamList>();
 
@@ -84,21 +85,27 @@ const AppTabs = () => {
           headerRight: (props) => (
             <HStack w={100} justifyContent="space-evenly" alignItems="center">
               <VStack>
-                <Badge
-                  mb={-4}
-                  mr={-3}
-                  alignSelf="flex-end"
-                  rounded="full"
-                  colorScheme="danger"
-                  variant="solid"
-                  zIndex={1}
-                  _text={{
-                    fontSize: 10,
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("Cart");
                   }}
                 >
-                  {state.items.length}
-                </Badge>
-                <Ionicons name="cart" pr={4} size={26} color={"#fff"} />
+                  <Badge
+                    mb={-4}
+                    mr={-3}
+                    alignSelf="flex-end"
+                    rounded="full"
+                    colorScheme="danger"
+                    variant="solid"
+                    zIndex={1}
+                    _text={{
+                      fontSize: 10,
+                    }}
+                  >
+                    {state.items.length}
+                  </Badge>
+                  <Ionicons name="cart" pr={4} size={26} color={"#fff"} />
+                </TouchableOpacity>
               </VStack>
               <Ionicons name={"notifications"} size={26} color={"#fff"} />
             </HStack>

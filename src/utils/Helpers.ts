@@ -29,3 +29,7 @@ export const getUserFromSecureStore = async (
     return null;
   }
 };
+
+export const deleteUserFromSecureStore = async (key: "USERTOKEN") => {
+  await secureStore.deleteItemAsync(key);
+};

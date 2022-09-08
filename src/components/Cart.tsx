@@ -30,6 +30,7 @@ const Cart = () => {
   const { showGetStarted } = useAppSelector((state) => state.User);
   const { isOpen } = useAppSelector(getCart);
   const state = useAppSelector(getCart);
+  console.log(state);
 
   return (
     <View>
@@ -83,9 +84,7 @@ const Cart = () => {
                     <Text numberOfLines={1} fontSize="xs">
                       {item.title}
                     </Text>
-                    <Text fontSize="xs">
-                      {"Ghc. " + item.price * item.quantity}
-                    </Text>
+                    <Text fontSize="xs">{"Ghc. " + item.price * item.qty}</Text>
                   </VStack>
 
                   <Text textAlign="center" flex={1}>
@@ -94,8 +93,10 @@ const Cart = () => {
                         rounded="full"
                         w={2}
                         h={2}
-                        disabled={Boolean(item.quantity <= 0)}
-                        onPress={() => dispatch(decreaseQuantity(item.id))}
+                        disabled={Boolean(item.qty <= 0)}
+                        onPress={() =>
+                          dispatch(decreaseQuantity(item.productId))
+                        }
                       >
                         <Icon
                           alignSelf="center"
@@ -103,12 +104,14 @@ const Cart = () => {
                           as={<Ionicons name="remove" size={5} />}
                         />
                       </Button>
-                      <Text mx={1}>{item.quantity}</Text>
+                      <Text mx={1}>{item.qty}</Text>
                       <Button
                         rounded="full"
                         w={2}
                         h={2}
-                        onPress={() => dispatch(increaseQuantity(item.id))}
+                        onPress={() =>
+                          dispatch(increaseQuantity(item.productId))
+                        }
                       >
                         <Icon
                           alignSelf="center"
@@ -125,7 +128,7 @@ const Cart = () => {
                       h={2}
                       colorScheme="#fff"
                       onPress={() => {
-                        return dispatch(removeFromCart(item.id));
+                        return dispatch(removeFromCart(item.productId));
                       }}
                     >
                       <Icon

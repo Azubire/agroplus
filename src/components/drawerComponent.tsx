@@ -17,13 +17,18 @@ import {
 } from "react-native";
 import { StatusBar } from "expo-status-bar";
 import { DrawerScreenPropsType } from "../navigations/AppDrawer/Types";
-import { useRoute } from "@react-navigation/native";
-import { useAppDispatch } from "../hooks/reduxHooks";
-import { logout } from "../store/features/userSlice";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useAppDispatch, useAppSelector } from "../hooks/reduxHooks";
+import { getUser, logout } from "../store/features/userSlice";
+import { useTheme } from "native-base";
+import { deleteUserFromSecureStore } from "../utils/Helpers";
 const logo = require("../../assets/app_images/logo.png");
 
 const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
+  const navigation = useNavigation();
   const dispatch = useAppDispatch();
+  const state = useAppSelector(getUser);
+  const { colors } = useTheme();
   return (
     //  <StatusBar style="dark" />
     <DrawerContentScrollView {...props}>
@@ -54,7 +59,7 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
                 paddingVertical: 8,
               }}
               onPress={() => {
-                props.navigation.navigate("Root", {
+                navigation.navigate("Root", {
                   screen: "AppTabs",
                   params: { screen: "UploadCrop" },
                 });
@@ -122,7 +127,11 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             }}
           />
           <DrawerItem
-            label={({ color }) => <Text style={{ color }}>My Adverts</Text>}
+            label={({ color }) => (
+              <Text style={{ color }}>
+                {state.isDistributor ? "My Orders" : "My Adverts"}
+              </Text>
+            )}
             icon={({ focused, size, color }) => (
               <FontAwesome
                 name={focused ? "address-card" : "address-book-o"}
@@ -182,7 +191,7 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             <TouchableOpacity
               style={{ opacity: 0.7, marginBottom: 20 }}
               onPress={() => {
-                props.navigation.navigate("Root", {
+                navigation.navigate("Root", {
                   screen: "HelpAndSupport",
                 });
               }}
@@ -192,7 +201,7 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             <TouchableOpacity
               style={{ opacity: 0.7, marginBottom: 20 }}
               onPress={() => {
-                props.navigation.navigate("Root", {
+                navigation.navigate("Root", {
                   screen: "TermsAndConditions",
                 });
               }}
@@ -208,34 +217,65 @@ const CustomDrawerContent: React.FC<DrawerContentComponentProps> = (props) => {
             }}
           >
             <View style={{ width: "88%" }}>
-              <TouchableOpacity
-                activeOpacity={0.6}
-                style={{
-                  backgroundColor: "#047857",
-                  borderRadius: 4,
-                  paddingVertical: 8,
-                }}
-                onPress={() => {
-                  props.navigation.navigate("Root", {
-                    screen: "AuthStack",
-                    params: { screen: "SignIn" },
-                  });
-                  // dispatch(logout());
-                }}
-              >
-                <View
+              {state.user.userToken ? (
+                <TouchableOpacity
+                  activeOpacity={0.6}
                   style={{
-                    flexDirection: "row",
-                    justifyContent: "center",
-                    alignItems: "center",
+                    backgroundColor: colors.black,
+                    borderRadius: 4,
+                    paddingVertical: 8,
+                  }}
+                  onPress={() => {
+                    dispatch(logout());
+                    deleteUserFromSecureStore("USERTOKEN");
+                    navigation.navigate("Root", {
+                      screen: "AppTabs",
+                      params: { screen: "Home" },
+                    });
                   }}
                 >
-                  <Text style={{ color: "#fff", marginHorizontal: 4 }}>
-                    Login
-                  </Text>
-                  <Ionicons name="log-in" size={25} color="#fff" />
-                </View>
-              </TouchableOpacity>
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text style={{ color: "#fff", marginHorizontal: 4 }}>
+                      Logout
+                    </Text>
+                    <Ionicons name="log-out" size={25} color="#fff" />
+                  </View>
+                </TouchableOpacity>
+              ) : (
+                <TouchableOpacity
+                  activeOpacity={0.6}
+                  style={{
+                    backgroundColor: "#047857",
+                    borderRadius: 4,
+                    paddingVertical: 8,
+                  }}
+                  onPress={() => {
+                    props.navigation.navigate("Root", {
+                      screen: "AuthStack",
+                      params: { screen: "SignIn" },
+                    });
+                  }}
+                >
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <Text style={{ color: "#fff", marginHorizontal: 4 }}>
+                      Login
+                    </Text>
+                    <Ionicons name="log-in" size={25} color="#fff" />
+                  </View>
+                </TouchableOpacity>
+              )}
             </View>
           </View>
         </View>

@@ -25,6 +25,7 @@ import Joi from "joi";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { joiResolver } from "@hookform/resolvers/joi";
 import { getUser, signin } from "../../store/features/userSlice";
+import { setUserToSecureStore } from "../../utils/Helpers";
 
 export interface IFormData {
   email: string;
@@ -76,8 +77,13 @@ const SigninScreen: React.FC<AuthScreenProps<"Signin">> = ({ navigation }) => {
     console.log("validated data --->", formData);
     try {
       const data = await dispatch(signin(formData)).unwrap();
-      console.log("data", data);
+
       if (!data.error) {
+        await setUserToSecureStore({
+          key: "USERTOKEN",
+          options: { userToken: data.user.userToken, email: data.user.email },
+        });
+
         navigation.navigate("Root", {
           screen: "AppTabs",
           params: { screen: "Settings" },

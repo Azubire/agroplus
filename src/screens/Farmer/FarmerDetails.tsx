@@ -35,6 +35,7 @@ import {
 import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { RootStackScreenProps } from "../../navigations/AppStack/types";
 import { addToCart } from "../../store/features/cartSlice";
+import { getUser } from "../../store/features/userSlice";
 
 const FarmerDetails = ({
   navigation,
@@ -58,6 +59,7 @@ const FarmerDetails = ({
   const { colors } = useTheme();
   const farmer = useAppSelector(getProduce(parseInt(id)));
   const filtered = useAppSelector(getRelatedProduce(parseInt(id)));
+  const { user } = useAppSelector(getUser);
 
   // console.log(filtered);
 
@@ -126,11 +128,13 @@ const FarmerDetails = ({
                   onPress={() =>
                     dispatch(
                       addToCart({
-                        id: produce.id,
+                        productId: produce.id,
                         img: produce.img,
                         title: produce.title,
                         price: produce.price,
-                        quantity: 1,
+                        qty: 1,
+                        userId: produce.userId,
+                        distributorId: user.userId,
                       })
                     )
                   }

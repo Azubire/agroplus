@@ -1,14 +1,15 @@
-import { View } from 'react-native'
-import React from 'react'
-import { Box, Icon,Text, useTheme } from 'native-base';
-import {Ionicons} from "@expo/vector-icons"
+import { View } from "react-native";
+import React from "react";
+import { Box, Icon, Text, useTheme } from "native-base";
+import { Ionicons } from "@expo/vector-icons";
+import CustomStatusBar from "./CustomStatusBar";
 
 const AccessDenied = () => {
+  const { colors } = useTheme();
 
-  const {colors} = useTheme()
-  
   return (
     <Box alignSelf="center" justifyContent="center" alignItems="center">
+      <CustomStatusBar />
       <Icon
         mt={5}
         alignSelf="center"
@@ -21,6 +22,6 @@ const AccessDenied = () => {
       </Text>
     </Box>
   );
-}
+};
 
-export default AccessDenied
+export default AccessDenied;

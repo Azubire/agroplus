@@ -25,6 +25,7 @@ import { useAppDispatch, useAppSelector } from "../../hooks/reduxHooks";
 import { RootStackScreenProps } from "../../navigations/AppStack/types";
 import { Ionicons } from "@expo/vector-icons";
 import { addToCart } from "../../store/features/cartSlice";
+import { getUser } from "../../store/features/userSlice";
 
 const Farmer = ({ navigation }: RootStackScreenProps<"FarmProduce">) => {
   const [loading, setLoading] = React.useState(true);
@@ -32,6 +33,7 @@ const Farmer = ({ navigation }: RootStackScreenProps<"FarmProduce">) => {
 
   const dispatch = useAppDispatch();
   const farmersState = useAppSelector(getFarmerState);
+  const { user } = useAppSelector(getUser);
 
   const { colors } = useTheme();
   React.useEffect(() => {
@@ -110,11 +112,13 @@ const Farmer = ({ navigation }: RootStackScreenProps<"FarmProduce">) => {
                       onPress={() => {
                         dispatch(
                           addToCart({
-                            id: item.id,
+                            productId: item.id,
                             img: item.img,
                             title: item.title,
                             price: item.price,
-                            quantity: 1,
+                            qty: 1,
+                            userId: item.userId,
+                            distributorId: user.userId,
                           })
                         );
                       }}

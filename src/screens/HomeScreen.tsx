@@ -44,6 +44,7 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
   const distributorState = useAppSelector(getDistributors);
   const adState = useAppSelector(getFarmerState);
   const { user } = useAppSelector(getUser);
+  const { isDistributor } = useAppSelector(getUser);
   const { colors } = useTheme();
 
   const fetchAds = async () => {
@@ -312,11 +313,13 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
                           onPress={() => {
                             dispatch(
                               addToCart({
-                                id: item.id,
+                                productId: item.id,
                                 img: item.img,
                                 title: item.title,
                                 price: item.price,
-                                quantity: 1,
+                                qty: 1,
+                                userId: item.userId,
+                                distributorId: user.userId,
                               })
                             );
                           }}
@@ -434,11 +437,13 @@ const Home: React.FC<TabScreenProps<"Home">> = ({ navigation }) => {
                           onPress={() => {
                             dispatch(
                               addToCart({
-                                id: item.id,
+                                productId: item.id,
                                 img: item.img,
                                 title: item.title,
                                 price: item.price,
-                                quantity: 1,
+                                qty: 1,
+                                userId: item.userId,
+                                distributorId: user.userId,
                               })
                             );
                           }}

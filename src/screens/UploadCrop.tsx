@@ -117,11 +117,11 @@ const UploadCrop: React.FC<TabScreenProps<"UploadCrop">> = ({ navigation }) => {
   const onSubmit: SubmitHandler<IFormData> = async (data) => {
     if (!isImage) return;
     const formData = createFormData(image, data);
-    console.log(formData);
+    // console.log(formData);
 
     try {
       const response = await dispatch(createAd(formData)).unwrap();
-      console.log("data", response);
+      // console.log("data", response);
       reset();
     } catch (error) {
       console.log("error", error);
