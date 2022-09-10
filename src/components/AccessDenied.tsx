@@ -3,13 +3,14 @@ import React from "react";
 import { Box, Icon, Text, useTheme } from "native-base";
 import { Ionicons } from "@expo/vector-icons";
 import CustomStatusBar from "./CustomStatusBar";
+import { StatusBarStyle } from "expo-status-bar";
 
-const AccessDenied = () => {
+const AccessDenied = ({ style }: { style?: StatusBarStyle }) => {
   const { colors } = useTheme();
 
   return (
     <Box alignSelf="center" justifyContent="center" alignItems="center">
-      <CustomStatusBar />
+      <CustomStatusBar style={style} />
       <Icon
         mt={5}
         alignSelf="center"

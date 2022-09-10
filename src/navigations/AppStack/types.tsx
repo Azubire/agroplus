@@ -17,6 +17,7 @@ export type RootStackParamList = {
   BecomeDistributor: undefined;
   Cart: undefined;
   MyAds: undefined;
+  OrderDetails: { id: number };
   AboutUs: undefined;
   ContactUs: undefined;
   Messages: undefined;

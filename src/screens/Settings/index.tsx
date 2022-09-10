@@ -39,7 +39,7 @@ const Settings = ({ navigation }: TabScreenProps<"Settings">) => {
           {user.isDistributor ? <Distributor /> : <Farmer />}
         </>
       ) : (
-        <AccessDenied />
+        <AccessDenied style="dark" />
       )}
     </SafeAreaView>
   );

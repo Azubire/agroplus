@@ -4,7 +4,8 @@ import FarmerReducer from "./features/famerSlice";
 import DistributorReducer from "./features/distributorSlice";
 import CartReducer from "./features/cartSlice";
 import AdSliceReducer from "./features/adSlice";
-import orderSliceReducer from "./features/orderSlice";
+import OrderSliceReducer from "./features/orderSlice";
+import OrderHistoryReducer from "./features/orderHistorySlice";
 
 const store = configureStore({
   reducer: {
@@ -13,7 +14,8 @@ const store = configureStore({
     Distributors: DistributorReducer,
     Cart: CartReducer,
     Ad: AdSliceReducer,
-    Orders: orderSliceReducer,
+    Orders: OrderSliceReducer,
+    OrderHistory: OrderHistoryReducer,
   },
 });
 

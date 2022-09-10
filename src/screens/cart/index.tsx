@@ -246,7 +246,9 @@ const Cart = ({ navigation }: RootStackScreenProps<"Cart">) => {
                       />
                     </Box>
                     <VStack flex={2} mt={3}>
-                      <Text numberOfLines={1}>{item.title}</Text>
+                      <Text textAlign="center" numberOfLines={1}>
+                        {item.title}
+                      </Text>
                       <Text>{"Ghc. " + item.price * item.qty}</Text>
                     </VStack>
 
@@ -329,7 +331,7 @@ const Cart = ({ navigation }: RootStackScreenProps<"Cart">) => {
           </Box>
         </>
       ) : (
-        <AccessDenied />
+        <AccessDenied style="light" />
       )}
     </View>
   );

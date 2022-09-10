@@ -16,6 +16,7 @@ import Farmer from "../../screens/Farmer/Farmer";
 import FarmerDetails from "../../screens/Farmer/FarmerDetails";
 import Cart from "../../screens/cart";
 import BecomeDistributor from "../../screens/Distributor/Add";
+import OrderDetails from "../../screens/MyAds/OrderDetails";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
@@ -51,7 +52,21 @@ const RootStack = () => {
       />
       <Stack.Screen name="FarmProduce" component={Farmer} />
       <Stack.Screen name="FarmProduceDetails" component={FarmerDetails} />
-      <Stack.Screen name="MyAds" component={AdHistory} />
+      <Stack.Screen
+        name="MyAds"
+        options={{ title: "Order History" }}
+        component={AdHistory}
+      />
+      <Stack.Screen
+        name="OrderDetails"
+        options={{
+          title: "Order Details",
+          // headerShown: false,
+          headerShadowVisible: false,
+          headerStyle: { backgroundColor: colors.info[500] },
+        }}
+        component={OrderDetails}
+      />
       <Stack.Screen name="AboutUs" component={AboutUS} />
       <Stack.Screen name="ContactUs" component={ContactUs} />
       <Stack.Screen name="HelpAndSupport" component={HelpAndSupport} />
